@@ -1,15 +1,17 @@
 import { Box, MenuItem, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect ,useState} from 'react'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux'
 import { jobTypeLoadAction } from '../redux/actions/jobTypeAction';
-import { registerAjobAction } from '../redux/actions/jobAction';
+import { editAjobAction } from '../redux/actions/jobAction';
+import { jobLoadSingleAction } from '../redux/actions/jobAction';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const validationSchema = yup.object({
-    title: yup
+    title: yup 
         .string('Enter a job title')
         .required('title is required'),
     description: yup
@@ -28,47 +30,71 @@ const validationSchema = yup.object({
 });
 
 
-const CreateJobPage = () => {
+const EditJobPage = () => {
+    const navigate=useNavigate();
     const { user } = useSelector(state => state.userProfile);
-    const { jobType } = useSelector(state => state.jobTypeAll);
+    const { jobType } = useSelector((state) => state.jobTypeAll);
+    const { singleJob, loading } = useSelector((state) => state.singleJob);
+    const { jobId } = useParams();
     const dispatch = useDispatch();
+  
+    const [initialValuesLoaded, setInitialValuesLoaded] = useState(false);
 
-    //job type
+
     useEffect(() => {
         const companyName=user?.companyName;
         dispatch(jobTypeLoadAction(companyName));
     }, [user]);
 
-
+    useEffect(() => {
+      dispatch(jobLoadSingleAction(jobId));
+    }, [jobId]);
+  
     const formik = useFormik({
-        initialValues: {
-            title: '',
-            description: '',
-            salary: '',
-            location: '',
-            jobType: '',
-            companyName:user.companyName    
-        },
-        validationSchema: validationSchema,
-        onSubmit: (values, actions) => {
-            dispatch(registerAjobAction(values))
-            // alert(JSON.stringify(values, null, 2));
-            actions.resetForm();
-        },
+      initialValues: {
+        title: singleJob ? singleJob.title : '',
+        description: singleJob ? singleJob.description : '',
+        salary: singleJob ? singleJob.salary : '',
+        location: singleJob ? singleJob.location : '',
+        jobType: '',
+      },
+      validationSchema: validationSchema, 
+      onSubmit: (values, actions) => {
+        dispatch(editAjobAction(values,jobId));
+        actions.resetForm();
+        navigate("/jobs");
+      },
     });
-
+  
+    useEffect(() => {
+      if (singleJob && !initialValuesLoaded) {
+      
+        formik.setValues({
+          title: singleJob.title,
+          description: singleJob.description,
+          salary: singleJob.salary,
+          location: singleJob.location,
+          jobType: "",
+        });
+        setInitialValuesLoaded(true);
+      }
+    }, [singleJob]);
 
 
     return (
+
+    
         <>
 
             <Box sx={{ height: '100%', display: "flex", alignItems: "center", justifyContent: "center", pt: 4 }}>
-
+                 {
+                  loading || !jobType?
+                  <h1>loading...</h1>:
 
                 <Box onSubmit={formik.handleSubmit} component="form" className='form_style border-style' >
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
                         <Typography variant="h5" component="h2" sx={{ pb: 3 }}>
-                            Register a Job
+                            Edit Job
                         </Typography>
                         <TextField sx={{ mb: 3 }}
                             fullWidth
@@ -159,13 +185,14 @@ const CreateJobPage = () => {
                             ))}
                         </TextField>
 
-                        <Button fullWidth variant="contained" type='submit' >Create job</Button>
+                        <Button fullWidth variant="contained" type='submit' >Edit job</Button>
                     </Box>
                 </Box>
+}
             </Box>
 
         </>
     )
 }
 
-export default CreateJobPage
+export default EditJobPage

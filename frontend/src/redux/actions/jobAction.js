@@ -9,7 +9,13 @@ import {
     JOB_LOAD_SUCCESS,
     REGISTER_JOB_FAIL,
     REGISTER_JOB_REQUEST,
-    REGISTER_JOB_SUCCESS
+    REGISTER_JOB_SUCCESS,
+    DELETE_JOB_FAIL,
+    DELETE_JOB_REQUEST,
+    DELETE_JOB_SUCCESS,
+    EDIT_JOB_FAIL,
+    EDIT_JOB_SUCCESS,
+    EDIT_JOB_REQUEST
 } from "../constants/jobconstant"
 
 
@@ -32,10 +38,10 @@ export const jobLoadAction = (pageNumber, keyword = '', cat = '', location = '',
 }
 
 // single job action
-export const jobLoadSingleAction = (id,companyName) => async (dispatch) => {
+export const jobLoadSingleAction = (jobId) => async (dispatch) => {
     dispatch({ type: JOB_LOAD_SINGLE_REQUEST });
     try {
-        const { data } = await axios.get(`/api/job/${companyName}/${id}`);
+        const { data } = await axios.get(`/api/job/${jobId}`);
         dispatch({
             type: JOB_LOAD_SINGLE_SUCCESS,
             payload: data
@@ -64,6 +70,55 @@ export const registerAjobAction = (job) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: REGISTER_JOB_FAIL,
+            payload: error.response.data.error
+        })
+        toast.error(error.response.data.error);
+
+    }
+}
+
+// edit job action
+export const editAjobAction = (job,jobId) => async (dispatch) => {
+    dispatch({ type: EDIT_JOB_REQUEST })
+
+    try {
+        const { data } = await axios.put(`/api/job/update/${jobId}`, job)
+        dispatch({
+            type: EDIT_JOB_SUCCESS,
+            payload: data
+        })
+        toast.success("Job edited successfully");
+
+
+    } catch (error) {
+        dispatch({
+            type: EDIT_JOB_FAIL,
+            payload: error.response.data.error
+        })
+        toast.error(error.response.data.error);
+
+    }
+}
+// delete job action
+export const deleteAjobAction = (jobId) => async (dispatch) => {
+    dispatch({ type: DELETE_JOB_REQUEST })
+
+    try {
+        const response = await axios.delete(`/api/jobs/${jobId}`);
+        const {data}=response;
+        if(response.status===404) toast.error("Job id does not exist");
+        else{
+            dispatch({
+            type: DELETE_JOB_SUCCESS,
+            payload: data
+        })
+        toast.success("Job Deleted successfully");
+
+    }
+    } catch (error) {
+      
+        dispatch({
+            type: DELETE_JOB_FAIL,
             payload: error.response.data.error
         })
         toast.error(error.response.data.error);

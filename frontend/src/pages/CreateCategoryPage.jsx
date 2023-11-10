@@ -25,7 +25,8 @@ const CreateCategory = () => {
     const formik = useFormik({  
         initialValues: {
             user: user && user._id,
-            jobTypeName: ''
+            jobTypeName: '',
+            companyName:user.companyName
         },
         validationSchema: validationSchema,
         onSubmit: (values, actions) => {

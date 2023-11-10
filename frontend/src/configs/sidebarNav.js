@@ -20,16 +20,28 @@ const sidebarNav = [
         text: 'Users'
     },
     {
+        link: '/recentapplications',
+        section: 'recent', 
+        icon: <i className='bx bx-user-pin'></i>,
+        text: 'Recent Applications'
+    },
+    {
         link: '/categories',
         section: 'categories',
         icon: <i className='bx bx-line-chart'></i>,
         text: 'Categories'
     },
     {
-        link: '/settings',
-        section: 'settings',
+        link: '/profile',
+        section: 'profile',
+        icon: <i className='bx bxs-user-badge' ></i>,
+        text: 'Profile'
+    },
+    {
+        link: '/flows',
+        section: 'flows',
         icon: <i className='bx bx-cog'></i>,
-        text: 'Settings'
+        text: 'Flows '
     }
 ]
 

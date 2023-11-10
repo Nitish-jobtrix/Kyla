@@ -16,14 +16,16 @@ import AdminRoute from "./component/AdminRoute";
 import Layout from "./pages/global/Layout";
 import UserJobsHistory from "./pages/user/UserJobsHistory";
 import UserInfoDashboard from "./pages/user/UserInfoDashboard";
-import AdminDashboard from "./pages/admin/AdminDashboard";
+import Flows from "./pages/Flows";
+// import AdminDashboard from "./pages/admin/AdminDashboard";
+
 import SingleJob from "./pages/SingleJob";
-import DashUsers from "./pages/admin/DashUsers";
-import DashJobs from "./pages/admin/DashJobs";
+// import DashUsers from "./pages/admin/DashUsers";
+// import DashJobs from "./pages/admin/DashJobs";
 import Register from "./pages/Register";
-import DashCategory from "./pages/admin/DashCategory";
-import DashCreateJob from "./pages/admin/DashCreateJob";
-import DashCreateCategory from "./pages/admin/DashCreateCategory";
+// import DashCategory from "./pages/admin/DashCategory";
+// import DashCreateJob from "./pages/admin/DashCreateJob";
+// import DashCreateCategory from "./pages/admin/DashCreateCategory";
 
 //kyla merging
 import Blank from "./pages/Blank";
@@ -32,6 +34,7 @@ import MainLayout from "./layout/MainLayout";
 import CreateCategoryPage from "./pages/CreateCategoryPage";
 import CreateJobPage from "./pages/CreateJobPage";
 import CategoriesPage from "./pages/CategoriesPage";
+import EditJobPage from "./pages/EditJobPage";
 import JobsPage from "./pages/JobsPage";
 
 //company user page
@@ -43,17 +46,18 @@ import { themeColors } from "./theme";
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import UsersPage from "./pages/UsersPage";
+import PostOnLinkedIn from "./pages/PostOnLinkedIn";
 
 //HOC
 const UserDashboardHOC = Layout(UserDashboard);
 const UserJobsHistoryHOC = Layout(UserJobsHistory);
 const UserInfoDashboardHOC = Layout(UserInfoDashboard);
-const AdminDashboardHOC = Layout(AdminDashboard);
-const DashUsersHOC = Layout(DashUsers);
-const DashJobsHOC = Layout(DashJobs);
-const DashCategoryHOC = Layout(DashCategory);
-const DashCreateJobHOC = Layout(DashCreateJob);
-const DashCreateCategoryHOC = Layout(DashCreateCategory);
+// const AdminDashboardHOC = Layout(AdminDashboard);
+// const DashUsersHOC = Layout(DashUsers);
+// const DashJobsHOC = Layout(DashJobs);
+// const DashCategoryHOC = Layout(DashCategory);
+// const DashCreateJobHOC = Layout(DashCreateJob);
+// const DashCreateCategoryHOC = Layout(DashCreateCategory);
 
 const App = () => {
   const { mode } = useSelector((state) => state.mode);
@@ -68,24 +72,28 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               
-              //specific company routes
+            
               <Route path="/jobs/:companyName" element={<Home />} />
-              <Route path="/jobs/:companyName/user/dashboard" element={ <UserRoute>
+              <Route path="/jobs/:companyName/user/dashboard" element={ <UserRoute> 
                     <UserDashboardHOC />
                   </UserRoute>} />
               
               <Route path="/jobs/register" element={<UserRegister />} />
               <Route path="/jobs/login" element={<UserLogin />} />
     
-              //routes for kyla
+             
               <Route path="/" element={ <AdminRoute><MainLayout /></AdminRoute>}>
                 <Route index element={<Dashboard />} />
+              <Route path="linkedin/post" element={<PostOnLinkedIn />} />
                 <Route path="users" element={<UsersPage />} />
+                <Route path="recentapplications" element={<Blank />} />
                 <Route path="categories/create" element={<CreateCategoryPage />} />
                 <Route path="jobs" element={<JobsPage />} />
                 <Route path="job/create" element={<CreateJobPage />} />
-                <Route path="settings" element={<Blank />} />
-                <Route path="categories" element={<CategoriesPage />} />
+                <Route path="job/edit/:jobId" element={<EditJobPage />} />
+                <Route path="profile" element={<Blank />} />
+                <Route path="categories"  element={<CategoriesPage />} />
+                <Route path="flows"  element={<Flows />} />
                 {/* <Route path="appliedjobs/user/:" element={<CategoriesPage />} /> */}
               </Route>
               <Route

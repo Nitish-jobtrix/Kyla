@@ -5,13 +5,15 @@ import { Link } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import { useDispatch, useSelector } from 'react-redux';
 import { jobLoadAction } from '../redux/actions/jobAction';
-
+import { deleteAjobAction } from '../redux/actions/jobAction';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const JobsPage = () => {
     const { user } = useSelector(state => state.userProfile);
     const { jobs, loading } = useSelector(state => state.loadJobs);
+    
     const dispatch = useDispatch();
-
    
 
     useEffect(() => {
@@ -25,10 +27,12 @@ const JobsPage = () => {
     data = (jobs !== undefined && jobs.length > 0) ? jobs : []
 
 
+
     //delete job by Id
-    const deleteJobById = (e, id) => {
-        console.log(id)
-    }
+    const deleteJobById = async (jobId) => {
+       dispatch(deleteAjobAction(jobId));
+      window.location.reload();
+      };
 
     const columns = [
 
@@ -46,14 +50,14 @@ const JobsPage = () => {
         {
             field: 'jobType',
             headerName: 'Category',
-            width: 150,
+            width: 100,
             valueGetter: (data) => data.row.jobType.jobTypeName
         },
        
         {
             field: 'available',
             headerName: 'available',
-            width: 150,
+            width: 100,
             renderCell: (values => (
                 values.row.available ? "Yes" : "No"
             ))
@@ -64,23 +68,40 @@ const JobsPage = () => {
             field: 'salary',
             headerName: 'Salary',
             type: Number,
-            width: 150,
+            width: 100,
             renderCell: (values => (
-                "$" + values.row.salary
+                "Rs." + values.row.salary
             ))
 
         },
 
         {
-            field: "Actions",
-            width: 200,
-            renderCell: (values) => (
-                <Box sx={{ display: "flex", justifyContent: "space-between", width: "170px" }}>
-                    <Button variant="contained"><Link style={{ color: "white", textDecoration: "none" }} to={`/admin/edit/job/${values.row._id}`}>Edit</Link></ Button>
-                    < Button onClick={(e) => deleteJobById(e, values.row._id)} variant="contained" color="error">Delete</ Button>
-                </Box>
-            )
-        }
+            field: 'edit',
+            headerName: 'Edit',
+            width: 80,
+            renderCell: (values => (
+                <Button style={{padding:"0"}}><Link style={{ color: "white", textDecoration: "none" }} to={`/job/edit/${values.row._id}`}><i style={{fontSize:"20px"}} className='bx bxs-edit-alt' ></i></Link></ Button>
+            ))
+        
+        },
+        {
+            field: 'delete',
+            headerName: 'Delete',
+            width: 80,
+            renderCell: (values => (
+                < Button onClick={() => deleteJobById(values.row._id)}  ><i style={{fontSize:"20px",marginTop:"-5px"}} className='bx bxs-trash-alt' ></i></ Button>
+            ))
+        
+        },
+        {
+            field: 'action',
+            headerName: 'Action',
+            width: 150,
+            renderCell: (values => (
+                < Button>post on linkedin</ Button>
+            ))
+        
+        },
     ];
 
 

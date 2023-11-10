@@ -42,7 +42,7 @@ const flows=["HR Assistant", "HR chatbot","lorem ipsum","lorem ipsum"];
 return <Wrapper>
     <div className="searchbox">
     <input type="text" placeholder="Name the flow"/>
-    <button><i class='bx bx-plus'></i></button>
+    <button><i className='bx bx-plus'></i></button>
     </div>
     <ul>
         {

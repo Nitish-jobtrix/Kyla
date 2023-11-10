@@ -6,7 +6,8 @@ exports.createJobType = async (req, res, next) => {
     try {
         const jobT = await JobType.create({
             jobTypeName: req.body.jobTypeName,
-            user: req.user.id
+            user: req.user.id,
+            companyName:req.body.companyName
         });
         res.status(201).json({
             success: true,
