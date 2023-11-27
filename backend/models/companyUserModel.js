@@ -42,7 +42,8 @@ const jobsHistorySchema = new mongoose.Schema({
    companyName:{
     type:String,
     required:true
-   }
+   },
+   
 
 
 }, { timestamps: true })
@@ -82,8 +83,11 @@ const companyUserSchema = new mongoose.Schema({
     jobsIdHistory: [{
         type:ObjectId,
         ref:"Job"
-    }]
-
+    }],
+    file: {
+        type: String,
+  
+      },
 }, { timestamps: true })
 
 //encrypting password before saving

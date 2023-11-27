@@ -5,8 +5,7 @@ const CompanyUser = require("../models/companyUserModel");
 // check is user is authenticated
 exports.isAuthenticated = async (req, res, next) => {
     const { usertoken } = req.cookies;
-    // Make sure token exists
-    // console.log(usertoken);
+
     if (!usertoken) {
         return next(new ErrorResponse('Not authorized to access this route', 401));
     }

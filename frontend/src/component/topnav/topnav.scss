@@ -8,6 +8,10 @@
         margin-bottom: $mobileSpacing;
     }
 }
+.right_topnav{
+    display: flex;
+    flex-direction: row;
+}
 
 .sidebar-toggle {
     --size: 40px;

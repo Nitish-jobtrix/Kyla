@@ -8,6 +8,7 @@ import { jobLoadAction } from '../redux/actions/jobAction';
 import { deleteAjobAction } from '../redux/actions/jobAction';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import styled from '@emotion/styled';
 
 const JobsPage = () => {
     const { user } = useSelector(state => state.userProfile);
@@ -80,7 +81,7 @@ const JobsPage = () => {
             headerName: 'Edit',
             width: 80,
             renderCell: (values => (
-                <Button style={{padding:"0"}}><Link style={{ color: "white", textDecoration: "none" }} to={`/job/edit/${values.row._id}`}><i style={{fontSize:"20px"}} className='bx bxs-edit-alt' ></i></Link></ Button>
+                <Button style={{padding:"0"}}><Link style={{  textDecoration: "none" }} to={`/job/edit/${values.row._id}`}><i style={{fontSize:"20px"}} className='bx bxs-edit-alt' ></i></Link></ Button>
             ))
         
         },
@@ -106,16 +107,16 @@ const JobsPage = () => {
 
 
     return (
+        <Wrapper>
         <Box >
-
             <Typography variant="h4" sx={{  pb: 3 }}>
                 Jobs list
                
             </Typography>
             <Box sx={{ pb: 2, display: "flex", justifyContent: "right" }}>
-                <Button variant='contained' color="success" startIcon={<AddIcon />}> <Link style={{ color: "white", textDecoration: "none" }} to="/job/create">Create Job</Link></Button>
+                <Button variant='contained' className='create-btn' startIcon={<AddIcon />}> <Link style={{ color: "white", textDecoration: "none" }} to="/job/create">Create Job</Link></Button>
             </Box>
-            <Paper sx={{ bgcolor: "secondary.midNightBlue" }} >
+            <Paper sx={{ bgcolor: 'rgb(231 203 222)' }} >
 
                 <Box sx={{ height: 400, width: '100%' }}>
                     <DataGrid
@@ -123,16 +124,14 @@ const JobsPage = () => {
                         sx={{
 
                             '& .MuiTablePagination-displayedRows': {
-                                color: 'white',
+                                color: 'black',
                             },
-                            color: 'white',
+                            color: 'black',
                             [`& .${gridClasses.row}`]: {
-                                bgcolor: (theme) =>
-                                    // theme.palette.mode === 'light' ? grey[200] : grey[900],
-                                    theme.palette.secondary.main
+                                bgcolor: "#ccbadc"    //this is row color 
                             },
                             button: {
-                                color: '#ffffff'
+                                color: 'rgb(134 36 219)'
                             }
 
                         }}
@@ -150,7 +149,26 @@ const JobsPage = () => {
             </Paper>
 
         </Box>
+        </Wrapper>
     )
 }
 
 export default JobsPage
+
+
+const Wrapper=styled.div`
+.MuiDataGrid-columnHeaders{
+    color:black;
+}
+
+.MuiDataGrid-root{
+    background: linear-gradient(225deg, hsla(39, 100%, 83%, 1) 0%, hsla(271, 74%, 86%, 1) 69%);
+    background: -moz-linear-gradient(225deg, hsla(39, 100%, 83%, 1) 0%, hsla(271, 74%, 86%, 1) 69%);
+    background: -webkit-linear-gradient(225deg, hsla(39, 100%, 83%, 1) 0%, hsla(271, 74%, 86%, 1) 69%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFE1A9", endColorstr="#DDC2F6", GradientType=1 );
+}
+.create-btn{
+    background:#8e70a9;
+}
+`
+

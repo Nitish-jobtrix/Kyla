@@ -1,41 +1,47 @@
-import { useTheme } from '@mui/material';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 
 
 const UserInfoDashboard = () => {
     const { companyUser } = useSelector(state => state.companyUserProfile);
-    const { palette } = useTheme();
+  
+   
     return (
-        <>
-            <Box sx={{ maxWidth: "50%", margin: "auto", pt: 10 }}>
-                <Card sx={{ minWidth: 275, bgcolor: palette.secondary.midNightBlue }}>
-                    <CardContent>
-                        <Typography sx={{ fontSize: 16 }} color="#fafafa" gutterBottom>
-                            Personal Info
-                        </Typography>
-                        <hr style={{ marginBottom: "30px" }} />
-                        <Typography variant="h6" component="div" sx={{ color: "#fafafa" }} >
-                            First name: {companyUser && companyUser.firstName}
-                        </Typography>
-                        <Typography variant="h6" component="div" sx={{ color: "#fafafa" }} >
-                            Last name: {companyUser && companyUser.lastName}
-                        </Typography>
-                        <Typography variant="h6" component="div" sx={{ color: "#fafafa" }} >
-                            E-mail:  {companyUser && companyUser.email}
-                        </Typography>
-                      
+       <Wrapper>
+        
+        <ProfileItem className="gradient">
+            <h3>Username</h3>
+            <p>{companyUser?.firstName}</p>
+        </ProfileItem>
+        <ProfileItem className="gradient">
+            <h3>Email</h3>
+            <p>{companyUser?.email}</p>
+        </ProfileItem>
+       </Wrapper>
 
-                    </CardContent>
-                </Card>
-            </Box>
-        </>
-    )
+    );
+    
 }
 
-export default UserInfoDashboard
+export default UserInfoDashboard;
+
+const Wrapper=styled.div`  
+display:flex;
+column-gap:2%;
+flex-wrap:wrap;
+
+` 
+const ProfileItem=styled.div`  
+padding:20px;
+width:48%;
+border-radius:10px;
+box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+@media screen and (max-width:750px){
+    width:100%;
+    margin-top:10px;
+}
+` 
+
 

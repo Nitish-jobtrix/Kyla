@@ -1,15 +1,17 @@
-import { Avatar, Box } from '@mui/material'
+import {  Box } from '@mui/material'
 import React, { useEffect } from 'react'
-import Footer from '../component/Footer'
-import Navbar from '../component/Navbar'
-import LockClockOutlined from '@mui/icons-material/LockClockOutlined'
+import horizontalImage from "../assets/images/horizontalImage.jpg"
+import verticalImage from "../assets/images/verticalImage.jpg"
+import Nav from '../component/Nav'
+import Footer from '../component/footer/Footer'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux' 
 import { useNavigate } from 'react-router-dom'
 import { companyUserSignInAction } from '../redux/actions/companyUserAction'
+import styled from 'styled-components'
 
 const validationSchema = yup.object({
     email: yup
@@ -27,14 +29,14 @@ const validationSchema = yup.object({
 const UserLogin = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { companyUserisAuthenticated, companyUserInfo } = useSelector(state => state.companyUserSignIn);
+    const {companyUserInfo } = useSelector(state => state.companyUserSignIn);
     useEffect(() => {
 
-        if (companyUserisAuthenticated) {
-           navigate("/jobs/jobtrix")
+        if (companyUserInfo ) {
+           navigate("/jobs/candidate/dashboard");
         }
 
-    }, [companyUserisAuthenticated])
+    }, [companyUserInfo])
 
     const formik = useFormik({
         initialValues: {
@@ -43,7 +45,6 @@ const UserLogin = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values, actions) => {
-            //  alert(JSON.stringify(values, null, 2));
             dispatch(companyUserSignInAction(values));
             actions.resetForm();
         }
@@ -52,16 +53,30 @@ const UserLogin = () => {
 
     return (
         <>
-            <Navbar />
-            <Box sx={{ height: '81vh', display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "primary.white" }}>
+            <Nav />
+            <Wrapper>
 
+            <div className="login-container">
+          <div className="left-container">
+          
+            <img
+            className="horizontal-img auth-img"
+              src={horizontalImage} alt="form image"
+            ></img>
+            <img
+            className="vertical-img auth-img"
+              src={verticalImage} alt="form image"
+            ></img>
 
-                <Box onSubmit={formik.handleSubmit} component="form" className='form_style border-style' >
-                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
-                        <h2>User Login</h2>
-                        <Avatar sx={{ m: 1, bgcolor: "primary.main", mb: 3 }}>
-                            <LockClockOutlined sx={{ color: 'white' }} />
-                        </Avatar>
+            
+          </div>
+
+                <Box onSubmit={formik.handleSubmit} component="form" className='right-container' >
+                    <Box  sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+                    <h2>Welcome Back Candidate!</h2>
+              <p>Login to continue</p>
+              <br></br>
+              <br></br>
                         <TextField
                             sx={{
                                 mb: 3,
@@ -108,14 +123,80 @@ const UserLogin = () => {
                             error={formik.touched.password && Boolean(formik.errors.password)}
                             helperText={formik.touched.password && formik.errors.password}
                         />
-
+<br></br>
                         <Button fullWidth variant="contained" type='submit' >Log In</Button>
                     </Box>
                 </Box>
-            </Box>
-            <Footer />
-        </>
+        
+            
+           </div>
+            </Wrapper>
+        <Footer />
+        </> 
     )
 }
 
-export default UserLogin
+export default UserLogin;
+
+
+
+const Wrapper = styled.div`
+  width:100%;
+  display: flex;
+ 
+  justify-content: center;
+  background: white;
+
+  .login-container {
+    width: 90%; 
+    height:100%;
+    display: flex;
+
+    @media screen and (max-width:800px){
+        flex-direction:column;
+    }
+
+    .left-container {
+      width: 50%;
+      height:100%;
+      background: white;
+      .auth-img {
+       width:100%;
+       max-height:100%;
+       object-fit:cover;
+      }
+.vertical-img{
+    display:none;
+}
+      @media screen and (max-width:800px){
+        width:100%;
+        height:auto; 
+        
+        .horizontal-img{
+            display:none;
+        }
+        .vertical-img{
+            display:block;
+        }
+      }
+    }
+
+    .right-container {
+      width: 50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 20px;
+      background: white;
+      @media screen and (max-width:800px){ 
+        width:100%;
+      }
+    }
+  }
+
+  button {
+    padding: 15px 0;
+  }
+`;
+
+

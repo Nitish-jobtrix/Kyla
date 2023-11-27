@@ -1,14 +1,16 @@
 import React from 'react'
 import './user-info.scss'
+import usericon from "../../assets/images/usericon.png"
+
 
 const UserInfo = ({ user }) => {
     return (
         <div className='user-info'>
             <div className="user-info__img">
-                <img src={user.img} alt="" />
+                <img src={usericon} alt="user icon" />
             </div>
             <div className="user-info__name">
-                <span>{user.name}</span>
+                <span>{user?.firstName}</span>
             </div>
         </div>
     )

@@ -1,17 +1,14 @@
 import React, { useEffect } from 'react'
 import { Sidebar, Menu, MenuItem, menuClasses, useProSidebar } from 'react-pro-sidebar';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { Box, useTheme } from '@mui/material';
-import WorkIcon from '@mui/icons-material/Work';
-import CategoryIcon from '@mui/icons-material/Category';
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 import Person3Icon from '@mui/icons-material/Person3';
+import ArticleIcon from '@mui/icons-material/Article';
 import Avatar from '@mui/material/Avatar';
 import logoDashboard from '../../images/hr-project.png'
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-// import { userLogoutAction, userProfileAction } from '../../redux/actions/userAction';
 import { useNavigate } from 'react-router-dom';
 import LoginIcon from '@mui/icons-material/Login';
 import { companyUserProfileAction ,companyUserLogoutAction} from '../../redux/actions/companyUserAction';
@@ -27,7 +24,6 @@ const SidebarAdm = () => {
 
 
     useEffect(() => {
-        // dispatch(userProfileAction());
         dispatch(companyUserProfileAction());
     }, []);
 
@@ -36,14 +32,14 @@ const SidebarAdm = () => {
         dispatch(companyUserLogoutAction());
         window.location.reload(true);
         setTimeout(() => {
-            navigate('/jobs/login');
+            navigate('/jobs/candidate/login');
         }, 500)
     }
 
 
     return (
         <>
-            <Sidebar backgroundColor="#003366" style={{ borderRightStyle: "none" }}>
+            <Sidebar backgroundColor="white" style={{ borderRightStyle: "none" }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between", flexDirection: "column", height: "100%" }}>
                     <Box>
                         <Box sx={{ pt: 3, pb: 5, display: "flex", justifyContent: "center" }}>
@@ -65,40 +61,33 @@ const SidebarAdm = () => {
 
                                 button: {
                                     [`&.${menuClasses.button}`]: {
-                                        color: "#fafafa",
+                                        color: "#3b3838",
                                     },
                                     [`&.${menuClasses.disabled}`]: {
                                         color: "green",
                                     },
                                     '&:hover': {
-                                        backgroundColor: "rgba(23,105,170, 1)",
-                                        color: "#fafafa",
+                                        backgroundColor: "#e6d4f5",
+                                        color: "#8624db",
                                     },
                                 },
 
                                 icon: {
                                     [`&.${menuClasses.icon}`]: {
-                                        // color: "blue",
-                                        color: palette.secondary.main,
-                                        //color: "red",
+                                        color: "#3b3838",
+                                    },
+                                    '&:hover': {
+                                        color: "#8624db",
                                     }
                                 },
                             }}
 
                         >
-                            {/* {
-                                userInfo  &&
-                                    <>
-                                        <MenuItem component={<Link to="/admin/dashboard" />} icon={<DashboardIcon />}> Dashboard </MenuItem>
-                                        <MenuItem component={<Link to="/admin/users" />} icon={<GroupAddIcon />}> Users </MenuItem>
-                                        <MenuItem component={<Link to="/admin/jobs" />} icon={<WorkIcon />}> Jobs </MenuItem>
-                                        <MenuItem component={<Link to="/admin/category" />} icon={<CategoryIcon />}> Category </MenuItem>
-                                    </> 
-                            } */}
                              { companyUserInfo   &&    <>
-                                        <MenuItem component={<Link to={`/jobs/${companyName}/user/dashboard`} />} icon={<DashboardIcon />}> Dashboard </MenuItem>
-                                        <MenuItem component={<Link to={`/jobs/${companyName}/user/applied`} />} icon={<WorkHistoryIcon />}> Applied Jobs </MenuItem>
-                                        <MenuItem component={<Link to={`/jobs/${companyName}/user/info`} />} icon={<Person3Icon />}> Personal Info </MenuItem>
+                                        <MenuItem component={<Link to={`/jobs/candidate/dashboard`} />} icon={<DashboardIcon />}> Dashboard </MenuItem>
+                                        <MenuItem component={<Link to={`/jobs/candidate/applied`} />} icon={<WorkHistoryIcon />}> Applied Jobs </MenuItem>
+                                        <MenuItem component={<Link to={`/jobs/candidate/info`} />} icon={<Person3Icon />}> Personal Info </MenuItem>
+                                        <MenuItem component={<Link to={`/jobs/candidate/upload`} />} icon={<ArticleIcon />}> Upload Resume </MenuItem>
                                     </>
                              }
 
@@ -111,19 +100,21 @@ const SidebarAdm = () => {
 
                                 button: {
                                     [`&.${menuClasses.button}`]: {
-                                        color: "#fafafa",
+                                        color: "#3b3838",
                                     },
 
                                     '&:hover': {
-                                        backgroundColor: "rgba(23,105,170, 1)",
-                                        color: "#fafafa",
+                                        backgroundColor: "#e6d4f5",
+                                        color: "#8624db",
                                     },
                                 },
 
                                 icon: {
                                     [`&.${menuClasses.icon}`]: {
-                                        // color: "blue",
-                                        color: palette.secondary.main,
+                                        color: "#3b3838",
+                                    },
+                                    '&:hover': {
+                                        color: "#8624db",
                                     }
                                 },
                             }}

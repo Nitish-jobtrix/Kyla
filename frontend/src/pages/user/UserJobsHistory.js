@@ -7,12 +7,10 @@ import CardElement from '../../component/CardElement'
 
 const UserJobsHistory = () => {
     const { companyUser } = useSelector(state => state.companyUserProfile);
-
-
     return (
         <>
             <Box>
-                <Typography variant="h4" sx={{ color: "#fafafa" }}> Jobs History</Typography>
+                <Typography variant="h4" sx={{ color: "black" }}> Jobs History</Typography>
                 <Box>
                     {
                         companyUser && companyUser.jobsHistory.map((history, i) => (

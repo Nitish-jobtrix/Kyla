@@ -34,21 +34,45 @@ const userSchema = new mongoose.Schema({
         minlength: [6, 'password must have at least (6) caracters'],
     },
 
-    company: {
+    companyName: {
         type: String,
         trim: true,
         required: [true, 'company name is required'],
         maxlength: 32,
+    },
+    lowercaseCompany:{
+        type:String,
+        trim:true
+    },
+    companyWebsite:{
+        type:String,
+        trim:true,
+        default:""
+    },
+    aboutCompany:{
+        type:String,
+        default:""
+    },
+    logo:{ 
+        type:String,
+        default:""
     }
 }, { timestamps: true })
 
 //encrypting password before saving
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
-        next();
+      next();
     }
-    this.password = await bcrypt.hash(this.password, 10)
-})
+  
+    // Hash the password
+    this.password = await bcrypt.hash(this.password, 10);
+  
+    // Update lowercaseCompany field
+    this.lowercaseCompany = this.companyName.toLowerCase();
+  
+    next();
+  });
 
 // compare user password
 userSchema.methods.comparePassword = async function (enteredPassword) {

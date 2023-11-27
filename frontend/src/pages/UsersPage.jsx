@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment'
 import { allUserAction } from '../redux/actions/userAction';
+import styled from '@emotion/styled';
 
 const UsersPage = () => {
     const { user } = useSelector(state => state.userProfile);
@@ -23,7 +24,7 @@ const UsersPage = () => {
     let data = [];
     data = (users !== undefined && users.length > 0) ? users : []
 
-    const deleteUserById = (e, id) => {
+    const deleteUserById = ( id) => {
         console.log(id);
     }
 
@@ -57,48 +58,54 @@ const UsersPage = () => {
             width: 150,
             renderCell: (params) => (
                 <Link to={`/appliedjobs/user/${params.row._id}`}>View Jobs</Link>
-            ),
-        },
-
-        {
-            field: "Actions",
-            width: 200,
-            renderCell: (values) => (
-                <Box sx={{ display: "flex", justifyContent: "space-between", width: "170px" }}>
-                    <Button variant="contained"><Link style={{ color: "white", textDecoration: "none" }} to={`/admin/edit/user/${values.row._id}`}>Edit</Link></ Button>
-                    < Button onClick={(e) => deleteUserById(e, values.row._id)} variant="contained" color="error">Delete</ Button>
-                </Box>
             )
-        }
+        },
+        {
+            field: 'edit',
+            headerName: 'Edit',
+            width: 120,
+            renderCell: (values => (
+                <Button style={{padding:"0"}}><Link style={{  textDecoration: "none" }} to={`/admin/edit/user/${values.row._id}`}><i style={{fontSize:"20px"}} className='bx bxs-edit-alt' ></i></Link></ Button>
+            ))
+        
+        },
+        {
+            field: 'delete',
+            headerName: 'Delete',
+            width: 120,
+            renderCell: (values => (
+                < Button onClick={() => deleteUserById(values.row._id)}  ><i style={{fontSize:"20px",marginTop:"-5px"}} className='bx bxs-trash-alt' ></i></ Button>
+            ))
+        
+        },
+        
     ];
 
     return (
-        <>
+        <Wrapper>
             <Box >
 
                 <Typography variant="h4" sx={{ pb: 3 }}>
                     All users
                 </Typography>
                 <Box sx={{ pb: 2, display: "flex", justifyContent: "right" }}>
-                    <Button variant='contained' color="success" startIcon={<AddIcon />}> Create user</Button>
+                    <Button variant='contained' className='create-btn' startIcon={<AddIcon />}> Create user</Button>
                 </Box>
-                <Paper sx={{ bgcolor: "secondary.midNightBlue" }} >
+                <Paper sx={{ bgcolor: 'rgb(231 203 222)' }} >
 
                     <Box sx={{ height: 400, width: '100%' }}>
                         <DataGrid
                             sx={{
 
                                 '& .MuiTablePagination-displayedRows': {
-                                    color: 'white',
+                                    color: 'black',
                                 },
-                                color: 'white',
+                                color: 'black',
                                 [`& .${gridClasses.row}`]: {
-                                    bgcolor: (theme) =>
-                                        // theme.palette.mode === 'light' ? grey[200] : grey[900],
-                                        theme.palette.secondary.main
+                                   bgcolor: "#ccbadc"
                                 },
                                 button: {
-                                    color: '#ffffff'
+                                    color: 'rgb(134 36 219)'
                                 }
 
                             }}
@@ -114,8 +121,25 @@ const UsersPage = () => {
                 </Paper>
 
             </Box>
-        </>
+        </Wrapper>
     )
 }
 
-export default UsersPage
+export default UsersPage;
+
+const Wrapper=styled.div`
+.MuiDataGrid-columnHeaders{
+    color:black;
+}
+
+.MuiDataGrid-root{
+    background: linear-gradient(225deg, hsla(39, 100%, 83%, 1) 0%, hsla(271, 74%, 86%, 1) 69%);
+    background: -moz-linear-gradient(225deg, hsla(39, 100%, 83%, 1) 0%, hsla(271, 74%, 86%, 1) 69%);
+    background: -webkit-linear-gradient(225deg, hsla(39, 100%, 83%, 1) 0%, hsla(271, 74%, 86%, 1) 69%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFE1A9", endColorstr="#DDC2F6", GradientType=1 );
+}
+
+.create-btn{
+    background:#8e70a9;
+}
+`

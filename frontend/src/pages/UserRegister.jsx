@@ -1,13 +1,18 @@
-import { Avatar, Box } from '@mui/material'
-import Footer from '../component/Footer'
-import Navbar from '../component/Navbar'
+import { Box } from '@mui/material'
+import React, { useEffect } from 'react'
+import horizontalImage from "../assets/images/horizontalImage.jpg"
+import verticalImage from "../assets/images/verticalImage.jpg"
+import styled from "styled-components"
+import Nav from '../component/Nav';
+import Footer from '../component/footer/Footer';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { companyUserSignUpAction } from '../redux/actions/companyUserAction'
+import { useNavigate } from 'react-router-dom'
 
 
 const validationSchema = yup.object({
@@ -32,9 +37,17 @@ const validationSchema = yup.object({
 
 
 
-const UserRegister = () => {
+const UserRegister = () => { 
     const dispatch = useDispatch();
-   
+    const navigate = useNavigate();
+    const {companyUserInfo } = useSelector(state => state.companyUserSignIn);
+    useEffect(() => {
+
+        if (companyUserInfo ) {
+           navigate("/jobs/candidate/dashboard");
+        }
+
+    }, [companyUserInfo])
 
     
     const formik = useFormik({
@@ -55,15 +68,31 @@ const UserRegister = () => {
 
     return (
         <>
-            <Navbar />
-            <Box sx={{ height: '81vh', display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "primary.white" }}>
+       <Nav />
+       <Wrapper>
 
-                <Box onSubmit={formik.handleSubmit} component="form" className='form_style border-style' >
-                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
-                        <h2>User Signup </h2>
-                        <Avatar sx={{ m: 1, bgcolor: "primary.main", mb: 3 }}>
-                            <LockOpenIcon />
-                        </Avatar>
+<div className="login-container">
+<div className="left-container">
+
+<img
+className="horizontal-img auth-img"
+  src={horizontalImage} alt="form image"
+></img>
+<img
+className="vertical-img auth-img"
+  src={verticalImage} alt="form image"
+></img>
+
+
+</div>
+       
+       <Box onSubmit={formik.handleSubmit} component="form" className='right-container' >
+       <Box  sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+                    <h2>Welcome Candidate!</h2>
+              <p>Register to continue</p>
+              <br></br>
+              <br></br>
+                        
                         <TextField
                             sx={{
                                 mb: 3,
@@ -158,15 +187,79 @@ const UserRegister = () => {
                         />
 
           
-
+<br></br>
 
                         <Button fullWidth variant="contained" type='submit' >Register</Button>
                     </Box>
                 </Box>
-            </Box>
+                </div>
+            </Wrapper>
             <Footer />
         </>
     )
 }
 
-export default UserRegister
+export default UserRegister;
+
+
+
+const Wrapper = styled.div`
+  width:100%;
+  display: flex;
+ 
+  justify-content: center;
+  background: white;
+
+  .login-container {
+    width: 90%; 
+    height:100%;
+    display: flex;
+
+    @media screen and (max-width:800px){
+        flex-direction:column;
+    }
+
+    .left-container {
+      width: 50%;
+      height:100%;
+      background: white;
+      .auth-img {
+       width:100%;
+       max-height:100%;
+       object-fit:cover;
+      }
+.vertical-img{
+    display:none;
+}
+      @media screen and (max-width:800px){
+        width:100%;
+        height:auto; 
+        
+        .horizontal-img{
+            display:none;
+        }
+        .vertical-img{
+            display:block;
+        }
+      }
+    }
+
+    .right-container {
+      width: 50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 20px;
+      background: white;
+      @media screen and (max-width:800px){ 
+        width:100%;
+      }
+    }
+  }
+
+  button {
+    padding: 15px 0;
+  }
+`;
+
+

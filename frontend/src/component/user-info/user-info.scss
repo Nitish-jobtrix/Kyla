@@ -19,7 +19,9 @@
     }
 
     &__name {
-        padding: 0 $spacing;
+        padding: 0 15px;
+        letter-spacing: 1px;
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
         font-size: $fontSizeMedium;
         font-weight: 700;
 

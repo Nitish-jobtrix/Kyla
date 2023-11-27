@@ -17,6 +17,7 @@ const jobTypeRoute = require('./routes/jobsTypeRoutes');
 const jobRoute = require('./routes/jobsRoutes');
 const companyUserAuthRoutes=require('./routes/companyUserAuthRoutes');
 const companyUserRoutes =require('./routes/companyUserRoutes');
+const chatRoutes =require('./routes/chatRoutes');
 
 const cookieParser = require("cookie-parser");
 const errorHandler = require("./middleware/error");
@@ -54,6 +55,7 @@ app.use('/api', userRoutes);
 app.use('/api', authRoutes);
 app.use('/api', jobTypeRoute);
 app.use('/api', jobRoute);
+app.use('/api', chatRoutes);
 
 __dirname = path.resolve()
 

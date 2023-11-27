@@ -5,7 +5,12 @@ const sidebarNav = [
         icon: <i className='bx bx-home-alt'></i>,
         text: 'Home'
     },
-  
+    {
+        link: '/flows',
+        section: 'flows',
+        icon: <i className='bx bxl-stack-overflow'></i>,
+        text: 'Flows'
+    },
   
     {
         link: '/jobs',
@@ -13,6 +18,12 @@ const sidebarNav = [
         icon: <i className='bx bx-cube'></i>,
         text: 'Jobs'
     },
+    // {
+    //     link: '/job/create',
+    //     section: 'createjob',
+    //     icon: <i class='bx bx-edit-alt'></i>,
+    //     text: 'Submit Job'
+    // },
     {
         link: '/users',
         section: 'users', 
@@ -32,17 +43,13 @@ const sidebarNav = [
         text: 'Categories'
     },
     {
-        link: '/profile',
-        section: 'profile',
-        icon: <i className='bx bxs-user-badge' ></i>,
-        text: 'Profile'
+        link: '/linkedinxray',
+        section: 'linkedinxray',
+        icon: <i className='bx bx-scan'></i>,
+        text: 'Linkedin Xray'
     },
-    {
-        link: '/flows',
-        section: 'flows',
-        icon: <i className='bx bx-cog'></i>,
-        text: 'Flows '
-    }
+    
+   
 ]
 
 export default sidebarNav

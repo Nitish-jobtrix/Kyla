@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useState,useEffect}  from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { companyUserLogoutAction } from '../redux/actions/companyUserAction';
 import { DarkMode, LightMode } from "@mui/icons-material";
 import { toggleActionTheme } from '../redux/actions/themeAction';
+import axios from 'axios';
 
 
 const pages = ['Home', 'Log In'];
@@ -29,8 +30,26 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { palette } = useTheme();
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElNav, setAnchorElNav] =useState(null);
+    const [anchorElUser, setAnchorElUser] = useState(null);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const {data} = await axios.get(`/api/jobs/verifycompany/${companyName}`);
+           if(!data.exists){
+            navigate("/pagenotfound");
+           }
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+    
+        fetchData();
+      }, []);
+    
+
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -59,7 +78,7 @@ const Navbar = () => {
   
 
     return (
-        // <AppBar position="static" sx={{ bgcolor: palette.primary.main }}>
+       
         <AppBar position="static" sx={{ bgcolor: palette.primary.main }}>
             <Container >
                 {/* principal Menu */}
@@ -199,9 +218,7 @@ const Navbar = () => {
                         >
 
 
-                            {/* <MenuItem onClick={handleCloseUserMenu}>
-                                <Typography textAlign="center"><Link style={{ textDecoration: "none", color: palette.secondary.main }} to="/admin/dashboard">Admin Dashboard</Link></Typography>
-                            </MenuItem> */}
+                      
                             <MenuItem onClick={handleCloseUserMenu}>
                                 <Typography textAlign="center"><Link style={{ textDecoration: "none", color: palette.secondary.main }} to={`/jobs/${companyName}/user/dashboard`}>User Dashboard</Link></Typography>
                             </MenuItem>

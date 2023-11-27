@@ -1,9 +1,11 @@
 const Job = require("../models/jobModel");
 const JobType = require("../models/jobTypeModel");
 const ErrorResponse = require("../utils/errorResponse");
-
+const path = require("path");
 //create job
 exports.createJob = async (req, res, next) => {
+  
+
   try {
     
     const job = await Job.create({
@@ -13,7 +15,10 @@ exports.createJob = async (req, res, next) => {
       location: req.body.location,
       jobType: req.body.jobType,
       companyName: req.body.companyName,
-      // company_id: req.user.id
+      skills:req.body.skills,
+      discloseSalary:req.body.discloseSalary,
+      qualification:req.body.qualification,
+      jobMode:req.body.jobMode,
     });
     res.status(201).json({
       success: true,
@@ -58,7 +63,7 @@ exports.singleJob = async (req, res, next) => {
 
 //update job by id.
 exports.updateJob = async (req, res, next) => {
-  console.log("i am here");
+
   try {
     const job = await Job.findById(req.params.jobId);
     if (!job) {
@@ -151,3 +156,40 @@ exports.showJobs = async (req, res, next) => {
   }
 };
 
+exports.showApplicants = async (req, res, next) => {
+  const jobId = req.params.jobId;
+
+  try {
+    const job = await Job.findById(jobId).populate({
+      path: 'applications.user',
+      match: {
+        'applications.status': {
+          $nin: ['rejected', 'shortlisted'] // Exclude 'rejected' and 'shortlisted' statuses
+        }
+      },
+      select: 'firstName lastName file email', // include these only
+    });
+
+    if (!job) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    // Filter out rejected applications from the response
+    job.applications = job.applications.filter(app => app.status !== 'rejected');
+
+    // Send the modified job object in the response
+    res.status(200).json(job);
+  } catch (error) {
+    next(error); 
+  }
+};
+
+exports.getResumebyFile=async (req, res, next) => {
+  try { 
+   const {file}=req.body;
+      const filePath = path.join(__dirname, `../../${file}`);
+      res.download(filePath);
+  } catch (error) {
+      return next(error); 
+  }
+  }

@@ -10,25 +10,27 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ProSidebarProvider } from "react-pro-sidebar";
 import LogIn from "./pages/LogIn";
+import LinkedinXray from "./pages/LinkedinXray";
 import UserDashboard from "./pages/user/UserDashboard";
 import UserRoute from "./component/UserRoute";
 import AdminRoute from "./component/AdminRoute";
 import Layout from "./pages/global/Layout";
 import UserJobsHistory from "./pages/user/UserJobsHistory";
 import UserInfoDashboard from "./pages/user/UserInfoDashboard";
-import Flows from "./pages/Flows";
-// import AdminDashboard from "./pages/admin/AdminDashboard";
+import UserResumeUpload from "./pages/user/UserResumeUpload";
 
+import About from "./pages/About"
 import SingleJob from "./pages/SingleJob";
-// import DashUsers from "./pages/admin/DashUsers";
-// import DashJobs from "./pages/admin/DashJobs";
 import Register from "./pages/Register";
-// import DashCategory from "./pages/admin/DashCategory";
-// import DashCreateJob from "./pages/admin/DashCreateJob";
-// import DashCreateCategory from "./pages/admin/DashCreateCategory";
+
+
+//chatbot routes
+import Flows from "./component/flows/Flows";
+
 
 //kyla merging
 import Blank from "./pages/Blank";
+import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./layout/MainLayout";
 import CreateCategoryPage from "./pages/CreateCategoryPage";
@@ -47,17 +49,14 @@ import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import UsersPage from "./pages/UsersPage";
 import PostOnLinkedIn from "./pages/PostOnLinkedIn";
+import RecentApplications from "./pages/RecentApplications";
+import Applicants from "./pages/Applicants";
 
 //HOC
 const UserDashboardHOC = Layout(UserDashboard);
 const UserJobsHistoryHOC = Layout(UserJobsHistory);
 const UserInfoDashboardHOC = Layout(UserInfoDashboard);
-// const AdminDashboardHOC = Layout(AdminDashboard);
-// const DashUsersHOC = Layout(DashUsers);
-// const DashJobsHOC = Layout(DashJobs);
-// const DashCategoryHOC = Layout(DashCategory);
-// const DashCreateJobHOC = Layout(DashCreateJob);
-// const DashCreateCategoryHOC = Layout(DashCreateCategory);
+const UserResumeUploadHOC = Layout(UserResumeUpload);
 
 const App = () => {
   const { mode } = useSelector((state) => state.mode);
@@ -71,91 +70,68 @@ const App = () => {
         <ProSidebarProvider>
           <BrowserRouter>
             <Routes>
-              
-            
-              <Route path="/jobs/:companyName" element={<Home />} />
-              <Route path="/jobs/:companyName/user/dashboard" element={ <UserRoute> 
-                    <UserDashboardHOC />
-                  </UserRoute>} />
-              
-              <Route path="/jobs/register" element={<UserRegister />} />
-              <Route path="/jobs/login" element={<UserLogin />} />
-    
-             
-              <Route path="/" element={ <AdminRoute><MainLayout /></AdminRoute>}>
+              {/* routes for HR i.e. main user */}
+              <Route
+                path="/"
+                element={
+                  <AdminRoute>
+                    <MainLayout />
+                  </AdminRoute>
+                }
+              >
                 <Route index element={<Dashboard />} />
-              <Route path="linkedin/post" element={<PostOnLinkedIn />} />
+                <Route path="linkedin/post" element={<PostOnLinkedIn />} />
+                <Route path="flows" element={<Flows />} />
                 <Route path="users" element={<UsersPage />} />
-                <Route path="recentapplications" element={<Blank />} />
-                <Route path="categories/create" element={<CreateCategoryPage />} />
+                <Route path="recentapplications" element={<RecentApplications />} />
+                <Route
+                  path="categories/create"
+                  element={<CreateCategoryPage />}
+                />
                 <Route path="jobs" element={<JobsPage />} />
                 <Route path="job/create" element={<CreateJobPage />} />
+                <Route path="/job/applicants/:jobId" element={<Applicants />} />
+                
                 <Route path="job/edit/:jobId" element={<EditJobPage />} />
-                <Route path="profile" element={<Blank />} />
-                <Route path="categories"  element={<CategoriesPage />} />
-                <Route path="flows"  element={<Flows />} />
-                {/* <Route path="appliedjobs/user/:" element={<CategoriesPage />} /> */}
+                <Route path="profile" element={<Profile />} />
+                <Route path="categories" element={<CategoriesPage />} />
+                <Route path="linkedinxray" element={<LinkedinXray />} />
               </Route>
+
+              {/* Home page (i.e company job page)  */}
+              <Route path="/jobs/:companyName" element={<Home />} />
+              <Route path="/jobs/:companyName/about" element={<About />} />
               <Route
                 path="/jobs/:companyName/search/location/:location"
                 element={<Home />}
               />
-              <Route path="/jobs/:companyName/search/:keyword" element={<Home />} />
-              <Route path="/jobs/:companyName/job/:id" element={<SingleJob />} />
-              
+              <Route
+                path="/jobs/:companyName/search/:keyword"
+                element={<Home />}
+              />
+              <Route
+                path="/jobs/:companyName/job/:id"   
+                element={<SingleJob />}
+              />
+
+             
               <Route path="/login" element={<LogIn />} />
               <Route path="/register" element={<Register />} />
-              {/* <Route
-                path="/admin/dashboard"
+
+
+{/* candidate routes  */}
+              <Route path="/jobs/candidate/register" element={<UserRegister />} />
+              <Route path="/jobs/candidate/login" element={<UserLogin />} />
+              <Route
+                path="/jobs/candidate/dashboard"
                 element={
-                  <AdminRoute>
-                    <AdminDashboardHOC />
-                  </AdminRoute>
-                }
-              /> */}
-              {/* <Route
-                path="/admin/users"
-                element={
-                  <AdminRoute>
-                    <DashUsersHOC />
-                  </AdminRoute>
+                  <UserRoute>
+                    <UserDashboardHOC />
+                  </UserRoute>
                 }
               />
               <Route
-                path="/admin/jobs"
-                element={
-                  <AdminRoute>
-                    <DashJobsHOC />
-                  </AdminRoute>
-                }
-              />
-              <Route
-                path="/admin/category"
-                element={
-                  <AdminRoute>
-                    <DashCategoryHOC />
-                  </AdminRoute>
-                }
-              />
-              <Route
-                path="/admin/job/create"
-                element={
-                  <AdminRoute>
-                    <DashCreateJobHOC />
-                  </AdminRoute>
-                }
-              />
-              <Route
-                path="/admin/category/create"
-                element={
-                  <AdminRoute>
-                    <DashCreateCategoryHOC />
-                  </AdminRoute>
-                }
-              /> */}
-             
-              <Route
-                path="/jobs/:companyName/user/info"
+                path="/jobs/candidate/info"
                 element={
                   <UserRoute>
                     <UserInfoDashboardHOC />
@@ -163,11 +139,18 @@ const App = () => {
                 }
               />
               <Route
-                path="/jobs/:companyName/user/applied"
+                path="/jobs/candidate/applied"
                 element={
                   <UserRoute>
                     <UserJobsHistoryHOC />
-                  
+                  </UserRoute>
+                }
+              />
+              <Route
+                path="/jobs/candidate/upload"
+                element={
+                  <UserRoute>
+                    <UserResumeUploadHOC />
                   </UserRoute>
                 }
               />

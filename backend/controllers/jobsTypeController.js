@@ -24,6 +24,7 @@ exports.allJobsType = async (req, res, next) => {
     try {
         const companyName=req.query.companyName;
         const jobT = await JobType.find({companyName:companyName}).sort({ createdAt: -1 });
+        
         res.status(200).json({
             success: true,
             jobT

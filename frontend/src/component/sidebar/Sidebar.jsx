@@ -4,11 +4,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { images } from '../../constants'
 import sidebarNav from '../../configs/sidebarNav'
 import { userLogoutAction,userProfileAction } from '../../redux/actions/userAction'
-import { useDispatch } from 'react-redux'
-
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import axios from 'axios'
 
 const Sidebar = () => {
-    const [activeIndex, setActiveIndex] = useState(0)
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [companyLogo, setCompanyLogo] = useState(0);
+    const { user } = useSelector(state => state.userProfile);
     const location = useLocation();
     const navigate=useNavigate();
     const dispatch = useDispatch();
@@ -25,6 +28,24 @@ const Sidebar = () => {
         setActiveIndex(curPath.length === 0 ? 0 : activeItem)
     }, [location])
 
+    useEffect(() => {
+        const getUserdata = async () => {
+            try {
+              const res = await axios.get( 
+                "/api/getuser",
+                { responseType: "blob"} 
+              );
+              const blob = new Blob([res.data], { type: res.data.type });
+              const link = document.createElement("a"); 
+              link.href = window.URL.createObjectURL(blob);
+              setCompanyLogo(link.href);
+            } catch (error) {
+              console.log(error);
+            }
+          };
+          getUserdata() ;
+      }, [])
+
     const closeSidebar = () => {
         document.querySelector('.main__content').style.transform = 'scale(1) translateX(0)'
         setTimeout(() => {
@@ -36,7 +57,7 @@ const Sidebar = () => {
     const logOut = () => {
         dispatch(userLogoutAction());
         window.location.reload(true);
-        setTimeout(() => {
+        setTimeout(() => {      
             navigate('/');
         }, 500)
     }
@@ -44,7 +65,15 @@ const Sidebar = () => {
     return (
         <div className='sidebar'>
             <div className="sidebar__logo">
-                <img src={images.logo} alt="" />
+                <div className="company_logo">
+                    <img src={companyLogo? companyLogo :images.usericon} alt="companylogo" />
+                    <div>
+                    <h3>{user?.firstName}</h3>
+                    <h4 style={{color:"grey"}}>{user?.companyName}</h4>
+                    <p>{user?.location}</p>
+                    <button className='gradient' onClick={()=>navigate("/profile")}>View Profile</button>
+                    </div> 
+                </div>
                 <div className="sidebar-close" onClick={closeSidebar}>
                     <i className='bx bx-x'></i>
                 </div>
@@ -62,7 +91,7 @@ const Sidebar = () => {
                         </Link>
                     ))
                 }
-                <div className="sidebar__menu__item">
+                <div className="sidebar__menu__item gradient">
                     <div className="sidebar__menu__item__icon">
                         <i className='bx bx-log-out'></i>
                     </div>

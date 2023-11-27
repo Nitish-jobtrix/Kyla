@@ -1,128 +1,98 @@
 import React from 'react'
-import { Bar } from 'react-chartjs-2'
-import Box from '../component/box/Box'
-import DashboardWrapper, { DashboardWrapperMain, DashboardWrapperRight } from '../component/dashboard-wrapper/DashboardWrapper'
-import SummaryBox, { SummaryBoxSpecial } from '../component/summary-box/SummaryBox'
-import { colors, data } from '../constants'
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-} from 'chart.js'
-import OverallList from '../component/overall-list/OverallList'
-import RevenueList from '../component/revenue-list/RevenueList'
-
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-)
+import styled from "styled-components";
+import StatsItem from '../component/StatsItem';
+import {PiSuitcaseSimpleBold} from "react-icons/pi";
+import {HiDocumentSearch} from "react-icons/hi";
+import {BsFillBookmarkFill} from "react-icons/bs";
+import {FiUsers} from "react-icons/fi";
+import { FcBriefcase } from "react-icons/fc";
+import notificationData from '../constants/notificationData';
+import ChartComponent from '../component/ChartComponent';
 
 const Dashboard = () => {
-    return (
-        <DashboardWrapper>
-            <DashboardWrapperMain>
-                <div className="row">
-                    <div className="col-8 col-md-12">
-                        <div className="row">
-                            {
-                                data.summary.map((item, index) => (
-                                    <div key={`summary-${index}`} className="col-6 col-md-6 col-sm-12 mb">
-                                        <SummaryBox item={item} />
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div>
-                    <div className="col-4 hide-md">
-                        <SummaryBoxSpecial item={data.revenueSummary} />
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-12">
-                        <Box>
-                            <RevenueByMonthsChart />
-                        </Box>
-                    </div>
-                </div>
-            </DashboardWrapperMain>
-            <DashboardWrapperRight>
-                <div className="title mb-less">Flows</div>
-                <div className="mb">
-                    <OverallList />
-                </div>
-                <div className="title mb-less">Lorem Ipsum</div>
-                <div className="mb">
-                    <RevenueList />
-                </div>
-            </DashboardWrapperRight>
-        </DashboardWrapper>
-    )
-}
-
-export default Dashboard
-
-const RevenueByMonthsChart = () => {
-    const chartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            xAxes: {
-                grid: {
-                    display: false,
-                    drawBorder: false
-                }
-            },
-            yAxes: {
-                grid: {
-                    display: false,
-                    drawBorder: false
-                }
-            }
-        },
-        plugins: {
-            legend: {
-                display: false
-            },
-            title: {
-                display: false
-            }
-        },
-        elements: {
-            bar: {
-                backgroundColor: colors.orange,
-                borderRadius: 20,
-                borderSkipped: 'bottom'
-            }
-        }
-    }
-
-    const chartData = {
-        labels: data.revenueByMonths.labels,
-        datasets: [
+  return (
+    <div>
+      <h1>Application Statistics</h1>
+      <br />
+        <ApplicationStats>
+            <StatsItem icon={PiSuitcaseSimpleBold} bgColor="#e8f0fa" textColor="blue" title="Posted Jobs" data="10"/>
+            <StatsItem icon={HiDocumentSearch} bgColor="#fbeae9" textColor="red" title="Application" data="10" />
+            <StatsItem icon={BsFillBookmarkFill} bgColor="#fef6e5" textColor="orange" title="Shortlisted" data="10" />
+            <StatsItem icon={FiUsers} bgColor="#eaf6ed" textColor="green" title="Users" data="10" />
+           
+        </ApplicationStats>
+        
+        <GraphContainer>
+            <ChartComponent />
+            <div className="notifications scroll_container">
+              <h3>Notifications</h3>
             {
-                label: 'Revenue',
-                data: data.revenueByMonths.data
+              notificationData.map((item,index)=>{
+                return <NotificationItem className='gradient' key={index}>
+                  <div className="icon_container">
+                  <FcBriefcase />
+                  </div>
+                  <div className="text_container">
+                            <p><i>{item.postedAt}</i></p>                   
+                            <p style={{color:"#585858"}}>{item.message}</p>                   
+                            <p>{item.jobTitle}</p>                   
+                  </div>
+                       </NotificationItem>
+              })
             }
-        ]
-    }
-    return (
-        <>
-            <div className="title mb">
-                Revenue by months
             </div>
-            <div>
-                <Bar options={chartOptions} data={chartData} height={`300px`} />
-            </div>
-        </>
-    )
+        </GraphContainer>
+  
+    </div>
+  )
 }
+
+export default Dashboard;
+
+const ApplicationStats=styled.div`
+display:flex;
+flex-wrap:wrap;
+justify-content:space-between;
+`
+
+const GraphContainer=styled.div`
+width:100%;
+display:flex;
+column-gap:2%;
+
+.notifications{
+  font-size:13px;
+  border-radius:10px;
+  height:350px;
+  overflow:auto;
+  width:29%;   
+  display:flex;
+  flex-direction:column;
+  row-gap:10px; 
+  padding:20px 10px;
+  background:white;
+  }
+
+`
+
+const NotificationItem=styled.div`
+padding:10px;
+border-radius:10px;
+display:flex;
+align-items:center;
+
+.icon_container{
+height:40px;
+width:40px;
+background:#da8c8c;
+margin-right:10px;
+border-radius:5px;
+font-size:30px;
+display:flex; 
+align-items:center;
+justify-content:center;
+}
+
+
+
+`
