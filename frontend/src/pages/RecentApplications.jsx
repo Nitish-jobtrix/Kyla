@@ -73,6 +73,15 @@ const RecentApplications = () => {
             ))
 
         },
+        {
+            field: 'shortlisted',
+            headerName: 'Shortlisted',
+            width: 150,
+            renderCell: (values => (
+                <Link to={`/job/applicants/${values.row._id}/shortlisted`}><Button>view</Button></Link>
+            ))
+
+        },
     ];
 
 

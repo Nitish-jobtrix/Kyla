@@ -22,13 +22,11 @@ const CardElement = ({ jobTitle, description, category, location, id ,companyNam
                 <Typography variant="h5" component="div">
                     {jobTitle}
                 </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                <Typography color="text.secondary">
                     {category}
                 </Typography>
-                <Typography variant="body2">
-                    Description: {description.split(" ").slice(0, 15).join(" ") + "..."}
-                </Typography>
-            </CardContent>
+
+            </CardContent>   
             <CardActions>
                 <Button disableElevation variant='contained' size="small" startIcon={<AddIcon />}><Link style={{ textDecoration: "none", color: "white", boxShadow: 0 }} to={`/jobs/${companyName}/job/${id}`}>More Details</Link></Button>
             </CardActions>

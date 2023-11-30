@@ -19,22 +19,16 @@ const sidebarNav = [
         text: 'Jobs'
     },
     // {
-    //     link: '/job/create',
-    //     section: 'createjob',
-    //     icon: <i class='bx bx-edit-alt'></i>,
-    //     text: 'Submit Job'
+    //     link: '/users',
+    //     section: 'users', 
+    //     icon: <i className='bx bx-user'></i>,
+    //     text: 'Users'
     // },
     {
-        link: '/users',
-        section: 'users', 
-        icon: <i className='bx bx-user'></i>,
-        text: 'Users'
-    },
-    {
-        link: '/recentapplications',
-        section: 'recent', 
+        link: '/applications',
+        section: 'applications', 
         icon: <i className='bx bx-user-pin'></i>,
-        text: 'Recent Applications'
+        text: 'Applications'
     },
     {
         link: '/categories',

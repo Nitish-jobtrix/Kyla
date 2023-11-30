@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
-const { createJob, singleJob, updateJob, showJobs, deleteJob ,showApplicants,getResumebyFile} = require('../controllers/jobsController');
+const { createJob, singleJob, updateJob, showJobs, deleteJob ,showApplicants,getResumebyFile,updateApplicationStatus,getShortlistedCandidates} = require('../controllers/jobsController');
 const { isAuthenticated, isAdmin } = require('../middleware/auth');
 
 
@@ -22,6 +22,12 @@ router.delete('/jobs/:jobId',deleteJob);
 
 //  /api/jobs/applicants/jobId
 router.get('/jobs/applicants/:jobId', showApplicants);
+
+//  /api/jobs/applicants/jobId
+router.get('/jobs/shortlistedCandidates/:jobId', getShortlistedCandidates);
+
+// Define the route for updating application status
+router.put('/jobs/updateApplicationStatus/:jobId/:applicantId', updateApplicationStatus);
 
 //get resume 
 router.post('/jobs/applicant/resume', getResumebyFile);

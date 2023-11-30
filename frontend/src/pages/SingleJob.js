@@ -1,19 +1,15 @@
-import { Card, CardContent, Stack, Typography } from '@mui/material'
-import { Box, Container } from '@mui/system'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import Footer from '../component/footer/Footer'
-import LoadingBox from '../component/LoadingBox'
 import Nav from '../component/Nav'
 import { jobLoadSingleAction } from '../redux/actions/jobAction'
-import Button from '@mui/material/Button'
 import {comanyUserApplyJobAction} from "../redux/actions/companyUserAction"
-import { useTheme } from '@emotion/react'
+import styled from 'styled-components'
 
 
 const SingleJob = () => {
-    const { palette } = useTheme();
+   
     const dispatch = useDispatch();
     const { singleJob, loading } = useSelector(state => state.singleJob)
     const { id ,companyName} = useParams();
@@ -28,64 +24,94 @@ const SingleJob = () => {
             salary: singleJob && singleJob.salary,
             location: singleJob && singleJob.location,
             companyName:singleJob && singleJob.companyName,
-            jobId:singleJob && singleJob._id
+            joAbId:singleJob && singleJob._id
         }))
     }
 
     return (
         <>
+        <Nav />
+     
+       <Wrapper>
+        <ApplyContainer> 
+           <h2> {singleJob && singleJob.title}</h2>
+           {singleJob?.discloseSalary && <p className='salary gradient'>  {singleJob && singleJob.salary} Lpa</p> }
+           <p> {singleJob && singleJob.jobType ? singleJob.jobType.jobTypeName : "No category"}</p>
+           <p> {singleJob && singleJob.location}, {singleJob?.jobMode}</p>
+        
+           <button onClick={applyForAJob} className='bright_gradient'>Apply for this Job</button>
+        </ApplyContainer>
+        <DescriptionContainer>
+        <h2>Job Description</h2>
+        <div className="description"  dangerouslySetInnerHTML={{ __html: singleJob?.description }} ></div>
+        <br />
+   
+       
+        <h2>Skills Required</h2>
+        <div className='skills' >
+         {singleJob?.skills.map((item,index)=>{
+            return <p className='gradient single_skill' key={index}>{item}</p>
+         })}
 
-            <Box sx={{ bgcolor: "#fafafa" }}>
-
-                <Nav />
-                <Box sx={{ height: '85vh' }}>
-                    <Container sx={{ pt: '30px' }}>
-
-                        <Stack
-                            direction={{ xs: 'column', sm: 'row' }}
-                            spacing={{ xs: 1, sm: 2, md: 4 }}
-                        >
-                            <Box sx={{ flex: 4, p: 2 }}>
-
-                                {
-                                    loading ? <LoadingBox /> :
-
-                                        <Card sx={{ bgcolor: palette.primary.white }} >
-                                            <CardContent>
-                                                <Typography variant="h5" component="h3">
-                                                    {singleJob && singleJob.title}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    <Box component="span" sx={{ fontWeight: 700 }}>Salary</Box>: ${singleJob && singleJob.salary}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    <Box component="span" sx={{ fontWeight: 700 }}>Category</Box>: {singleJob && singleJob.jobType ? singleJob.jobType.jobTypeName : "No category"}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    <Box component="span" sx={{ fontWeight: 700 }}>Location</Box>: {singleJob && singleJob.location}
-                                                </Typography>
-                                                <Typography variant="body2" sx={{ pt: 2 }}>
-                                                    {/* <h3>Job description:</h3> */}
-                                                    {singleJob && singleJob.description}
-                                                </Typography>
-                                            </CardContent>
-                                        </Card>
-                                }
-                            </Box>
-                            <Box sx={{ flex: 1, p: 2 }}>
-                                <Card sx={{ p: 2, bgcolor: palette.primary.white }}>
-                                    <Button onClick={applyForAJob} sx={{ fontSize: "13px" }} variant='contained'>Apply for this Job</Button>
-                                </Card>
-                            </Box>
-
-                        </Stack>
-
-                    </Container>
-                </Box>
-                <Footer />
-            </Box>
-        </>
+        </div>
+        <br />
+       
+       
+        <h2>Qualifications Required</h2>
+        <div className="description"  dangerouslySetInnerHTML={{ __html: singleJob?.qualification }} ></div>
+       
+        </DescriptionContainer>
+       </Wrapper>
+      <Footer />
+       </>
     )
 }
 
-export default SingleJob
+export default SingleJob;
+
+const Wrapper=styled.div`
+display:flex;
+column-gap:20px;
+padding:100px;
+background:#fafafa;
+
+
+`
+const ApplyContainer=styled.div`
+width:30%;
+align-self:flex-start;
+background:white;
+flex-direction:column;
+padding:20px;
+border-radius:10px;
+display:flex;
+row-gap:10px;
+.salary{
+    padding:5px;
+    border-radius:5px; 
+    align-self:flex-start;
+}
+button{
+    color:white;
+    font-weight:bold;
+}
+
+`
+
+const DescriptionContainer=styled.div`
+width:70%;
+padding:20px;
+background:white;
+border-radius:10px;
+
+.skills{
+    display:flex;
+    column-gap:10px;
+    row-gap:5px;   
+    flex-wrap:wrap; 
+}
+.single_skill{
+    padding:5px 10px;
+    border-radius:5px;
+}
+`

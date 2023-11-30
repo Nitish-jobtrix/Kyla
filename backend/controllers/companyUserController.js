@@ -79,7 +79,7 @@ exports.createCompanyUserJobsHistory = async (req, res, next) => {
                 {
                     $push: {
                         applications: {
-                            userId: req.user._id,
+                            user: req.user._id,
                             appliedAt: new Date(),
                             // Add additional application information if needed
                         },

@@ -32,7 +32,7 @@ const LinkedinXray = () => {
     </QueryContainer>
     
     <div className="searchBox">
-    <Button>Search Profiles</Button>
+    <Button className='bright_gradient'>Search Profiles</Button>
     </div>
 
     </Wrapper>
@@ -71,7 +71,6 @@ padding:10px;
 border:none;
 width:100%;
 cursor:pointer;
-background:rgb(240, 76, 240);
 color:white;
 font-weight:bold;
 font-size:15px;

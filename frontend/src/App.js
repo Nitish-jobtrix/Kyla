@@ -47,10 +47,12 @@ import { createTheme } from "@mui/material/styles";
 import { themeColors } from "./theme";
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
-import UsersPage from "./pages/UsersPage";
+// import UsersPage from "./pages/UsersPage";
 import PostOnLinkedIn from "./pages/PostOnLinkedIn";
 import RecentApplications from "./pages/RecentApplications";
 import Applicants from "./pages/Applicants";
+import Shortlisted from "./pages/Shortlisted";
+
 
 //HOC
 const UserDashboardHOC = Layout(UserDashboard);
@@ -67,7 +69,7 @@ const App = () => {
       <ToastContainer />
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <ProSidebarProvider>
+        <ProSidebarProvider>  
           <BrowserRouter>
             <Routes>
               {/* routes for HR i.e. main user */}
@@ -80,19 +82,22 @@ const App = () => {
                 }
               >
                 <Route index element={<Dashboard />} />
-                <Route path="linkedin/post" element={<PostOnLinkedIn />} />
+                <Route path="linkedin/post" element={<PostOnLinkedIn />} />  
                 <Route path="flows" element={<Flows />} />
-                <Route path="users" element={<UsersPage />} />
-                <Route path="recentapplications" element={<RecentApplications />} />
+                {/* <Route path="users" element={<UsersPage />} /> */}
+                <Route path="applications" element={<RecentApplications />} />
                 <Route
                   path="categories/create"
                   element={<CreateCategoryPage />}
                 />
                 <Route path="jobs" element={<JobsPage />} />
                 <Route path="job/create" element={<CreateJobPage />} />
+              
                 <Route path="/job/applicants/:jobId" element={<Applicants />} />
+                <Route path="/job/applicants/:jobId/shortlisted" element={<Shortlisted />} /> 
                 
-                <Route path="job/edit/:jobId" element={<EditJobPage />} />
+                {/* <Route path="job/edit/:jobId" element={<EditJobPage />} /> */}
+              
                 <Route path="profile" element={<Profile />} />
                 <Route path="categories" element={<CategoriesPage />} />
                 <Route path="linkedinxray" element={<LinkedinXray />} />

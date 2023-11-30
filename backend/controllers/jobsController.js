@@ -76,7 +76,10 @@ exports.updateJob = async (req, res, next) => {
       job.salary =  req.body.salary || job.salary;
       job.location =  req.body.location || job.location;
       job.jobType =  req.body.jobType || job.jobType;
-
+      job.skills=req.body.skills || job.skills;
+      job.qualification=req.body.qualification || job.qualification;
+      job.discloseSalary=req.body.discloseSalary || job.discloseSalary;
+      job.jobMode=req.body.jobMode || job.jobMode;
       await job.save();
 
     res.status(200).json({
@@ -174,16 +177,41 @@ exports.showApplicants = async (req, res, next) => {
       return res.status(404).json({ error: 'Job not found' });
     }
 
-    // Filter out rejected applications from the response
-    job.applications = job.applications.filter(app => app.status !== 'rejected');
+    job.applications = job.applications.filter(app => app.status !== 'rejected' && app.status !== 'shortlisted');
 
-    // Send the modified job object in the response
     res.status(200).json(job);
   } catch (error) {
     next(error); 
   }
 };
 
+
+exports.getShortlistedCandidates=async (req, res, next) => {
+  const jobId = req.params.jobId;
+
+  try {
+    const job = await Job.findById(jobId).populate({
+      path: 'applications.user',
+      match: {
+        'applications.status': {
+          $nin: ['rejected', 'inReview'] 
+        }
+      },
+      select: 'firstName lastName file email',
+    });
+
+    if (!job) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    job.applications = job.applications.filter(app => app.status !== 'rejected' && app.status !== 'inReview');
+
+    res.status(200).json(job);
+  } catch (error) {
+    next(error); 
+  }
+
+}
 exports.getResumebyFile=async (req, res, next) => {
   try { 
    const {file}=req.body;
@@ -193,3 +221,27 @@ exports.getResumebyFile=async (req, res, next) => {
       return next(error); 
   }
   }
+
+exports.updateApplicationStatus=async (req, res, next) => {
+  try {
+    const { jobId, applicantId } = req.params;
+    const { newStatus } = req.body;
+
+    // Find the job by jobId and update the application status
+    const job = await Job.findOneAndUpdate(
+      { _id: jobId, 'applications._id': applicantId },
+      { $set: { 'applications.$.status': newStatus } },
+      { new: true }
+    );
+
+    if (!job) {
+      return res.status(404).json({ error: 'Job or applicant not found' });
+    }
+
+    res.json({ message: 'Application status updated successfully', job });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+  }
+

@@ -4,13 +4,12 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ApplicantCard from '../component/ApplicantCard';
 
-const Applicants = () => {
+const Shortlisted = () => {
   const { jobId } = useParams();
   const [singleJob, setSingleJob] = useState([]);
 
   const fetchJob = async () => {
-    const { data } = await axios.get(`/api/jobs/applicants/${jobId}`);
-  
+    const { data } = await axios.get(`/api/jobs/shortlistedCandidates/${jobId}`);
     setSingleJob(data);
   }
   //fetch the job by jobid and its applicants 
@@ -18,7 +17,6 @@ const Applicants = () => {
    
     fetchJob();
   }, [jobId])
-
 
   return (
    <Wrapper>
@@ -36,18 +34,18 @@ const Applicants = () => {
      <p>Email</p>
      <p>Resume</p>
      <p>Applied Date</p>
-     <p>Status</p> 
+   
     </div>
     <hr />
      {singleJob?.applications?.map((app,index)=>{
-      return <ApplicantCard key={index} app={app} fetchJob={fetchJob} jobId={jobId} shortlisted={false} /> 
+      return <ApplicantCard key={index} app={app} fetchJob={fetchJob} jobId={jobId} shortlisted={true} /> 
      })}
     </div>
    </Wrapper>
   )
 }
 
-export default Applicants;
+export default Shortlisted;
 
 const Wrapper=styled.div`
 h2,h3{

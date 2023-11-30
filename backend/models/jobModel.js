@@ -57,7 +57,7 @@ const jobSchema = new mongoose.Schema({
         type: Boolean,
     },
     skills: {
-        type: String,
+        type: [String],
     },
     qualification: {
         type: String,

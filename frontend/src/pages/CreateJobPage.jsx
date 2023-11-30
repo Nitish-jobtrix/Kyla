@@ -1,280 +1,276 @@
-import { Box, MenuItem, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import TextField from '@mui/material/TextField';
-import styled from "styled-components"
-import { useFormik } from 'formik';
-import * as yup from 'yup';
+import React, { useState, useRef, useEffect } from 'react';
+import styled from "styled-components";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux'
 import { jobTypeLoadAction } from '../redux/actions/jobTypeAction';
 import { registerAjobAction } from '../redux/actions/jobAction';
-
-const validationSchema = yup.object({
-    title: yup
-        .string('Enter a job title')
-        .required('title is required'),
-    description: yup
-        .string('Enter a description')
-        .min(6, 'Description should be of minimum 6 characters length')
-        .required('Description is required'),
-    salary: yup
-        .number('Enter a salary')
-        .required('Salary is required'),
-    location: yup
-        .string('Enter a location')
-        .required('Location is required'),
-    qualification: yup
-        .string('Enter qualification')
-        .required('qualification is required'),
-    jobType: yup
-        .string('Enter a Category')
-        .required('Category is required'),
-    jobMode: yup
-        .string('Enter mode of job')
-        .required('Job mode is required'),
-    disclose: yup
-        .boolean('Enter disclose value '),
-    skills: yup
-        .string('Enter Key Skills')
-        .required('Add atleast one skill')    
-});
 
 
 const CreateJobPage = () => {
     const { user } = useSelector(state => state.userProfile);
     const { jobType } = useSelector(state => state.jobTypeAll);
-    const [isDisclose,setDisclose]=useState(false);
+    const [title, setTitle] = useState("");
+    const [location, setLocation] = useState("");
+    const [salary, setSalary] = useState("");
+    const [category, setCategory] = useState("");
+    const [skills, setSkillsRequired] = useState([]);
+    const [currentSkills,setCurrentSkills]=useState("");
+    const [jobMode, setJobMode] = useState("");
+    const [description, setDescription] = useState("");
+    const [qualification, setQualification] = useState("");
+    const [isDisclose, setDisclose] = useState(false);
     const dispatch = useDispatch();
 
-    console.log(jobType);
-    //job type
+
     useEffect(() => {
         const companyName=user?.companyName;
          dispatch(jobTypeLoadAction(companyName));
          
     }, [user]);
 
+    const handleClick = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+          setSkillsRequired(prevSkills => [...prevSkills, currentSkills]);
+          setCurrentSkills("");
+        }
+      };
 
-    const formik = useFormik({
-        initialValues: {
-            title: '',
-            description: '',
-            salary: '',
-            location: '',
-            jobType: '',
-            jobMode:'',
-            skills:'',
-            qualification:'',
-            discloseSalary:isDisclose,
-            companyName:user?.companyName    
-        },
-        validationSchema: validationSchema,
-        onSubmit: (values, actions) => {
-            dispatch(registerAjobAction(values))
-            actions.resetForm();
-        },
-    });
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+     
+      try{
+      const obj={
+        title,description,salary,location,jobType:category,jobMode,skills,qualification,discloseSalary:isDisclose,companyName:user?.companyName 
+      
+      }
 
-
+      dispatch(registerAjobAction(obj));
+      setTitle("");
+      setCategory("");
+      setLocation("");
+      setSkillsRequired([]);
+      setSalary("");
+      setJobMode("");
+      setDescription("");
+      setQualification("");
+    }
+    catch(error){
+        console.log(error);
+    }
+    };
 
     return (
         <Wrapper>
-                <Box onSubmit={formik.handleSubmit} component="form"  >
-                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
-                        <h1 style={{marginBottom:"20px"}}>
-                            Register a Job
-                        </h1>
-                        <TextField sx={{ mb: 3 }}
-                            fullWidth
-                            id="title"
-                            label="Title"
-                            name='title'
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            placeholder="Title"
-                            value={formik.values.title}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.title && Boolean(formik.errors.title)}
-                            helperText={formik.touched.title && formik.errors.title}
-                        />
-                        <TextField sx={{ mb: 3 }}
-                            fullWidth
-                            id="description"
-                            name="description"
-                            label="Description"
-                            type="text"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            placeholder="Description"
-                            value={formik.values.description}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.description && Boolean(formik.errors.description)}
-                            helperText={formik.touched.description && formik.errors.description}
-                        />
-                        <Button className='gradient'>generate using AI</Button>
+            <h2>Post a Job</h2>
+            <br />
 
-                        <TextField sx={{ mb: 3 }}
-                            fullWidth
-                            id="skills"
-                            name="skills"
-                            label="Key skills Required "
-                            type="text"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            placeholder="Skills (Node.js,react.js....)"
-                            value={formik.values.skills}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.skills && Boolean(formik.errors.skills)}
-                            helperText={formik.touched.skills && formik.errors.skills}
-                        />
+            <FormContainer onSubmit={handleSubmit}>
+                <div className="items">
+                    <p>Job Title</p>
+                    <input type="text" name='title' value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter the job title" />
+                </div>
 
-                        <TextField sx={{ mb: 3 }}
-                            fullWidth
-                            id="qualification"
-                            name="qualification"
-                            label="Qualification Required "
-                            type="text"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            placeholder="Enter Qualification"
-                            value={formik.values.qualification}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.qualification && Boolean(formik.errors.qualification)}
-                            helperText={formik.touched.qualification && formik.errors.qualification}
-                        />
-                        <TextField sx={{ mb: 1 }}
-                            fullWidth
-                            id="salary"
-                            name="salary"
-                            label="Salary"
-                            type="text"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            placeholder="Salary"
-                            value={formik.values.salary}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.salary && Boolean(formik.errors.salary)}
-                            helperText={formik.touched.salary && formik.errors.salary}
-                        />
-                        <div className="disclose_box">
-                        <button style={isDisclose === true ? { backgroundColor: "#a74cff",color:"white" } : {}} onClick={() => setDisclose(true)}>Disclose</button>
-<button style={isDisclose === false ? { backgroundColor: "#a74cff", color:"white" } : {}} onClick={() => setDisclose(false)}>Hide</button>
+                <div className="items">
+                    <p>Location</p>
+                    <input type="text" name='location' value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Eg.Delhi,Mumbai" />
+                </div>
+                <div className="items">
+                    <p>Salary</p>
+                    <input type="text" name='salary' value={salary} onChange={(e) => setSalary(e.target.value)} placeholder="Enter salary of the job" />
+                    <div className="disclose_box">
+                        <span style={isDisclose === true ? { backgroundColor: "#a74cff", color: "white" } : {}} onClick={() => setDisclose(true)}>Disclose</span>
+                        <span style={isDisclose === false ? { backgroundColor: "#a74cff", color: "white" } : {}} onClick={() => setDisclose(false)}>Hide</span>
 
-                        </div>
+                    </div>
+                </div>
+                <div className="items">
+                    
+                    <p>category</p>
+            <select
+                name="jobType"
+                value={category}
+                className="dropdown"
+                onChange={(e)=>setCategory(e.target.value)}
+            >
+                <option value="" disabled>Select a job type</option>
+                {jobType?.map((cat) => (
+                    <option key={cat._id} value={cat._id}>
+                        {cat.jobTypeName}
+                    </option>
+                ))}
+            </select>
+                </div>
 
-                        <TextField sx={{ mb: 3 }}
-                            fullWidth
-                            id="location"
-                            name="location"
-                            label="Location"
-                            type="text"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            placeholder="Location"
-                            value={formik.values.location}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.location && Boolean(formik.errors.location)}
-                            helperText={formik.touched.location && formik.errors.location}
-                        />
-                
-                <TextField sx={{ mb: 3 }}
-                            fullWidth
-                            className="px-2 my-2"
-                            variant="outlined"
-                            name="jobMode"
-                            id="jobMode"
-                            select
-                            label="Mode of Job"
-                            value={formik.values.jobMode}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.jobMode && Boolean(formik.errors.jobMode)}
-                            helperText={formik.touched.jobMode && formik.errors.jobMode}
-                        >
-                            <MenuItem key={""} value={""}>
-                            </MenuItem>
+                <div className="items fullwidth">
+                    <p>Key Skills Required</p>
+                    <input type="text" name='companyWebsite' value={currentSkills} onKeyDown={handleClick} onChange={(e) => setCurrentSkills(e.target.value)} placeholder="write skill then press Enter" />
+                    <div className="skills">
+                        {skills.map((item,index)=>{
+                            return <span key={index}>{item}</span>
+                        })}
+                    </div> 
+                </div>
+                <div className="items fullwidth">
+                    <p>Mode of job</p>
+                    <select
+                name="jobType"
+                value={jobMode}
+                className="dropdown"
+                onChange={(e)=>setJobMode(e.target.value)}
+            >
+                <option value="" disabled>Select a job Mode</option>
+                <option value="onsite" >Onsite</option>
+                <option value="hybrid" >Hybrid</option>
+                <option value="remote">Remote</option>
+                </select>
+                </div>
+                <div className="items textarea">
+                    <p>Job Description</p>
+                    <ReactQuill placeholder='write about your company' name="about" theme="snow" value={description} onChange={(value) => setDescription(value)} className='text_editor' />
+                </div>
 
-                            <MenuItem  value={"onsite"}>
-                                    Onsite
-                                </MenuItem>
-                            <MenuItem  value={"hybrid"}>
-                                    Hybrid
-                                </MenuItem>
-                            <MenuItem  value={"remote"}>
-                                    Remote
-                                </MenuItem>
-                        </TextField> 
+                <div className="items textarea">
+                    <p>Qualifications Required</p>
+                    <ReactQuill placeholder='write about your company' name="about" theme="snow" value={qualification} onChange={(value) => setQualification(value)} className='text_editor' />
+                </div>
 
+                <button type='submit' className='gradient'>Post Job</button>
 
-                        <TextField sx={{ mb: 3 }}
-                            fullWidth
-                            className="px-2 my-2"
-                            variant="outlined"
-                            name="jobType"
-                            id="jobType"
-                            select
-                            label="Category"
-                            value={formik.values.jobType}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.jobType && Boolean(formik.errors.jobType)}
-                            helperText={formik.touched.jobType && formik.errors.jobType}
-                        >
-                            <MenuItem key={""} value={""}>
+            </FormContainer>
 
-                            </MenuItem>
-
-                            {jobType && jobType.map((cat) => (
-                                <MenuItem key={cat._id} value={cat._id}>
-                                    {cat.jobTypeName}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        
-                        <Button  className='bright_gradient create-btn' type='submit' >Create job</Button>
-                    </Box>
-                </Box>
-           
         </Wrapper>
     )
 }
 
 export default CreateJobPage;
 
-const Wrapper=styled.div`
+const Wrapper = styled.div`
+padding:20px;
+width:100%;
+background:white;
+
+img{
+    height:100px;
+    width:100px;
+    margin-right:10px;
+}
+.logo_container{
+    display:flex;
+    padding:10px;
+    align-items:center;
+    width:100%;
+    
+}
+
+.logo_container div{
+    display:flex;
+    align-items:center;
+}
+
+button{
+    background:#8e70a9;
+    color:white;
+    font-weight:bold;
+}
+
+@media screen and (max-width:500px){
+    .logo_container div{
+        flex-direction:column;
+        align-items:flex-start;
+        row-gap:10px;
+    }
+}
+
+`
+
+const FormContainer = styled.form`
+width:100%;
+display:flex;
+flex-wrap:wrap;
+column-gap:2%;
+row-gap:20px;
+margin-top:20px;
+margin-bottom:20px;
+
+.items{
+width:48%;
+}
+
 .disclose_box{
     display:flex;
     column-gap:10px;
-    align-self:flex-start;
-    margin-bottom:20px;
-    button{
-        background:#dcc1f6;   
+    margin-top:10px;
+    span{
+        background:#a69daf;   
         font-weight:bold;
-        color:grey;
+        cursor:pointer;
+        padding:5px;
+        font-size:14px;
+        border-radius:5px;
+        color:white;
     }
 }
-.create-btn{
-    width:100%;
-    font-size:18px;
+.skills{
+    display:flex;
+    column-gap:10px;
     margin-top:10px;
-    font-weight:bold;
+    flex-wrap:wrap;
+    span{
+        background:#a080c0;  
+        padding:5px;
+        color:white;
+        border-radius:5px;
+        font-size:14px;
+    }
 }
-`
 
-const Button=styled.button`
-padding:10px 15px;
-align-self:flex-start;
-margin-top:-20px;
-margin-bottom:20px;
-`
+.dropdown{
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top:10px;
+    border-radius:5px;
+    background:#e6d4f5;
+    padding:20px 10px;
+    width:100%;
+    border:none;
+    outline:none;
+}
+.dropdown option {
+    height: 40px; /* Adjust the height of each option as needed */
+  }
+
+
+input{
+  margin-top:10px;
+  border-radius:5px;
+  background:#e6d4f5;
+  padding:20px 10px;
+  width:100%;
+  border:none;
+  outline:none;
+
+}
+.textarea{
+    width:100%;
+    height:300px;
+}
+.fullwidth{
+    width:100%;
+}
+
+.text_editor{
+margin-top:10px;
+    height:200px;
+}
+
+@media screen and (max-width:500px){
+    .items{
+     width:100%;   
+    }
+    column-gap:0%;
+}
+
+` 
+
