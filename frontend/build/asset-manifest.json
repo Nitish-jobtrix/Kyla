@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.933f5101.css",
-    "main.js": "/static/js/main.ca95f5b1.js",
-    "static/media/horizontalImage.jpg": "/static/media/horizontalImage.80ee4091730b5eb8628d.jpg",
+    "main.js": "/static/js/main.10094ccb.js",
     "static/media/boxicons.svg": "/static/media/boxicons.f80cc694af79b88fde78.svg",
-    "static/media/verticalImage.jpg": "/static/media/verticalImage.bdc74927a69cc46a0678.jpg",
+    "static/media/horizontalImage.jpg": "/static/media/horizontalImage.42ec5de9064f930a38dd.jpg",
     "static/media/boxicons.eot": "/static/media/boxicons.dfc882ec9689f820c7c9.eot",
     "static/media/boxicons.woff": "/static/media/boxicons.1a7e2e2bf3a855e674d4.woff",
     "static/media/boxicons.ttf": "/static/media/boxicons.22afc8ee5cfc540cddff.ttf",
+    "static/media/verticalImage.jpg": "/static/media/verticalImage.a16b2c1c963fa16086d8.jpg",
     "static/media/avt.jpg": "/static/media/avt.99a4f4efd4e111760a3e.jpg",
     "static/media/boxicons.woff2": "/static/media/boxicons.60f603cccbdff82a523c.woff2",
     "static/media/jobbg.jpg": "/static/media/jobbg.667fd8d0ebae0dbf848c.jpg",
@@ -16,10 +16,10 @@
     "static/media/logo.svg": "/static/media/logo.07fe6969dbffbaec359e6cc982ebbd9f.svg",
     "index.html": "/index.html",
     "main.933f5101.css.map": "/static/css/main.933f5101.css.map",
-    "main.ca95f5b1.js.map": "/static/js/main.ca95f5b1.js.map"
+    "main.10094ccb.js.map": "/static/js/main.10094ccb.js.map"
   },
   "entrypoints": [
     "static/css/main.933f5101.css",
-    "static/js/main.ca95f5b1.js"
+    "static/js/main.10094ccb.js"
   ]
 }
