@@ -19,6 +19,8 @@ const Profile = () => {
    const [aboutCompany,setAboutCompany]=useState("");
    const [image,setImage]=useState("");
    const [previewPhoto,setPreviewPhoto]=useState("");
+   
+   
    useEffect(() => {
     if(user){
         setUserName(user.firstName);
@@ -36,7 +38,7 @@ const Profile = () => {
     const getUserdata = async () => {
         try {
           const res = await axios.get(
-            "/api/getuser",
+            `/api/getuser`,
             { responseType: "blob"} 
           );
           const blob = new Blob([res.data], { type: res.data.type });
@@ -67,7 +69,7 @@ const Profile = () => {
           profileData.append("aboutCompany", aboutCompany);
           
         
-          const res = await axios.post("/api/user/updateprofile", profileData);
+          const res = await axios.post(`/api/user/updateprofile`, profileData);
       
           if (res.status === 201) {
             toast.success("Profile updated successfully!");

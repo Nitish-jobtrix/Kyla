@@ -33,7 +33,7 @@ export const createJobTypeAction = (jobtype) => async (dispatch) => {
     dispatch({ type: CREATE_JOB_TYPE_REQUEST })
 
     try {
-        const { data } = await axios.post("/api/type/create", jobtype)
+        const { data } = await axios.post(`/api/type/create`, jobtype)
         dispatch({
             type: CREATE_JOB_TYPE_SUCCESS,
             payload: data

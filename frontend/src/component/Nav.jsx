@@ -14,7 +14,7 @@ const Nav = () => {
   const { companyName } = useParams();
   const { companyUserInfo } = useSelector(state => state.companyUserSignIn);
 
-
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +24,7 @@ const Nav = () => {
           const url=`/api/jobs/verifycompany/${companyName}`;
           const res = await axios.get(
            url,
-            { responseType: "blob"} 
+            { responseType: "blob"}  
           );
          
           const blob = new Blob([res.data], { type: res.data.type });

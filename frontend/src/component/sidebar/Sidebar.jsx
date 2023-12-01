@@ -15,6 +15,7 @@ const Sidebar = () => {
     const location = useLocation();
     const navigate=useNavigate();
     const dispatch = useDispatch();
+    
 
     useEffect(() => {
         // dispatch(userProfileAction());
@@ -32,7 +33,7 @@ const Sidebar = () => {
         const getUserdata = async () => {
             try {
               const res = await axios.get( 
-                "/api/getuser",
+                `/api/getuser`,
                 { responseType: "blob"} 
               );
               const blob = new Blob([res.data], { type: res.data.type });

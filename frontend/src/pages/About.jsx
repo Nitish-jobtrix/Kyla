@@ -9,7 +9,7 @@ const About = () => {
     const [aboutCompany, setAbout] = useState("");
     const [name, setCompanyName] = useState("");
     const [website, setCompanyWebsite] = useState("");
-
+    
     useEffect(() => {
         const fetchData = async () => {
             try {

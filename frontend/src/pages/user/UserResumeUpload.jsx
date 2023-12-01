@@ -8,7 +8,7 @@ const UserResumeUpload = () => {
   const { companyUser } = useSelector(state => state.companyUserProfile);
   const fileInputRef = useRef(null);
   const [resumeUpload,setResumeUpload]=useState(false); 
-
+  
   const addItem = async (e) => {
     e.preventDefault();
     try {
@@ -17,7 +17,7 @@ const UserResumeUpload = () => {
       
      
       const res = await axios.post(
-        "/api/jobs/candidate/uploadresume",
+        `/api/jobs/candidate/uploadresume`,
         formData
       );
       if(res.status===201){

@@ -32,10 +32,10 @@ mongoose.connect(process.env.DATABASE, {
   .then(() => console.log("DB connected successfully"))
   .catch((err) => console.log(err));
 
-//MIDDLEWARE
-// if (process.env.NODE_ENV === 'development') {
-//   app.use(morgan('dev'))
-// }
+// MIDDLEWARE
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'))
+}
 app.use(bodyParser.json({ limit: "5mb" }));
 app.use(bodyParser.urlencoded({
   limit: "5mb", 
@@ -59,17 +59,17 @@ app.use('/api', chatRoutes);
 
 __dirname = path.resolve()
 
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static(path.join(__dirname, '/frontend/build')))
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/build')))
 
-//   app.get('*', (req, res) =>
-//     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-//   )
-// } else {
-//   app.get('/', (req, res) => {
-//     res.send('API is running....')
-//   })
-// }
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+  )
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running....')
+  })
+}
 
 // error middleware
 app.use(errorHandler);

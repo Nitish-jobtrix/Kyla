@@ -7,7 +7,7 @@ import ApplicantCard from '../component/ApplicantCard';
 const Applicants = () => {
   const { jobId } = useParams();
   const [singleJob, setSingleJob] = useState([]);
-
+  
   const fetchJob = async () => {
     const { data } = await axios.get(`/api/jobs/applicants/${jobId}`);
   

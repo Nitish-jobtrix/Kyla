@@ -103,24 +103,6 @@ export const companyUserProfileAction = () => async (dispatch) => {
 }
 
 
-//all user action  ......i think this is not needed by user of a specific job site 
-// export const allUserAction = () => async (dispatch) => {
-//     dispatch({ type: ALL_USER_LOAD_REQUEST });
-//     try {
-//         const { data } = await axios.get("/api/allusers");
-//         dispatch({
-//             type: ALL_USER_LOAD_SUCCESS,
-//             payload: data
-//         });
-
-//     } catch (error) {
-//         dispatch({
-//             type: ALL_USER_LOAD_FAIL,
-//             payload: error.response.data.error
-//         });
-//     }
-// }
-
 //user job apply action
 export const comanyUserApplyJobAction = (job) => async (dispatch) => {
     dispatch({ type: COMPANY_USER_APPLY_JOB_REQUEST });

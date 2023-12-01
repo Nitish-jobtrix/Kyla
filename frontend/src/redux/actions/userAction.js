@@ -4,9 +4,7 @@ import {
     ALL_USER_LOAD_FAIL,
     ALL_USER_LOAD_REQUEST,
     ALL_USER_LOAD_SUCCESS,
-    USER_APPLY_JOB_FAIL,
-    USER_APPLY_JOB_REQUEST,
-    USER_APPLY_JOB_SUCCESS,
+   
     USER_LOAD_FAIL,
     USER_LOAD_REQUEST,
     USER_LOAD_SUCCESS,
@@ -27,7 +25,7 @@ import {
 export const userSignInAction = (user) => async (dispatch) => {
     dispatch({ type: USER_SIGNIN_REQUEST });
     try {
-        const { data } = await axios.post("/api/signin", user);
+        const { data } = await axios.post(`/api/signin`, user);
         localStorage.setItem('userInfo', JSON.stringify(data));
         dispatch({
             type: USER_SIGNIN_SUCCESS,
@@ -47,7 +45,7 @@ export const userSignInAction = (user) => async (dispatch) => {
 export const userSignUpAction = (user) => async (dispatch) => {
     dispatch({ type: USER_SIGNUP_REQUEST });
     try {
-        const { data } = await axios.post("/api/signup", user);
+        const { data } = await axios.post(`/api/signup`, user);
 
         dispatch({
             type: USER_SIGNUP_SUCCESS,
@@ -68,7 +66,7 @@ export const userLogoutAction = () => async (dispatch) => {
     dispatch({ type: USER_LOGOUT_REQUEST });
     try {
         localStorage.removeItem('userInfo');
-        const { data } = await axios.get("/api/logout");
+        const { data } = await axios.get(`/api/logout`);
         dispatch({
             type: USER_LOGOUT_SUCCESS,
             payload: data
@@ -88,7 +86,7 @@ export const userLogoutAction = () => async (dispatch) => {
 export const userProfileAction = () => async (dispatch) => {
     dispatch({ type: USER_LOAD_REQUEST });
     try {
-        const { data } = await axios.get("/api/me");
+        const { data } = await axios.get(`/api/me`);
         dispatch({
             type: USER_LOAD_SUCCESS,
             payload: data

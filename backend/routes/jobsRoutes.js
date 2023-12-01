@@ -1,5 +1,4 @@
 const express = require('express');
-const axios = require('axios');
 const router = express.Router();
 const { createJob, singleJob, updateJob, showJobs, deleteJob ,showApplicants,getResumebyFile,updateApplicationStatus,getShortlistedCandidates} = require('../controllers/jobsController');
 const { isAuthenticated, isAdmin } = require('../middleware/auth');

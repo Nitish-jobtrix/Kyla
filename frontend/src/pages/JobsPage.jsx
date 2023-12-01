@@ -6,8 +6,6 @@ import AddIcon from '@mui/icons-material/Add';
 import { useDispatch, useSelector } from 'react-redux';
 import { jobLoadAction } from '../redux/actions/jobAction';
 import { deleteAjobAction } from '../redux/actions/jobAction';
-import axios from 'axios';
-import { toast } from 'react-toastify';
 import styled from '@emotion/styled';
 
 const JobsPage = () => {

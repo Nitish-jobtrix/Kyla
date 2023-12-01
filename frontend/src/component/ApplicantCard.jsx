@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import { toast } from 'react-toastify';
 
+
+
 const ApplicantCard = ({app,jobId,fetchJob,shortlisted}) => {
     const appliedDate = new Date(app?.appliedAt);
 
@@ -24,7 +26,7 @@ const ApplicantCard = ({app,jobId,fetchJob,shortlisted}) => {
   const getResumeLink = async () => {
     try {
         if(app?.user?.file){
-      const res = await axios.post( "/api/jobs/applicant/resume",{file:app.user.file}, { responseType: "blob" });
+      const res = await axios.post( `/api/jobs/applicant/resume`,{file:app.user.file}, { responseType: "blob" });
       const blob = new Blob([res.data], { type: res.data.type });
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
