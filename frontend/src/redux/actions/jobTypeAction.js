@@ -38,7 +38,7 @@ export const createJobTypeAction = (jobtype) => async (dispatch) => {
             type: CREATE_JOB_TYPE_SUCCESS,
             payload: data
         })
-        toast.success("Job type created successfully");
+        toast.success("category created successfully");
 
 
     } catch (error) {

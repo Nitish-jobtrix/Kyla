@@ -19,10 +19,8 @@
     }
 
     &__name {
-        padding: 0 15px;
+        padding: 0 10px;
         letter-spacing: 1px;
-        font-family:Verdana, Geneva, Tahoma, sans-serif;
-        font-size: $fontSizeMedium;
         font-weight: 700;
 
         @include tablet {

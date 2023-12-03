@@ -75,6 +75,13 @@ column-gap:20px;
 padding:100px;
 background:#fafafa;
 
+@media screen and (max-width:1000px){
+    flex-direction:column;  
+    row-gap:20px;
+}
+@media screen and (max-width:700px){
+    padding:20px 10px; 
+}
 
 `
 const ApplyContainer=styled.div`
@@ -96,6 +103,10 @@ button{
     font-weight:bold;
 }
 
+@media screen and (max-width:1000px){
+   width:100%;
+}
+
 `
 
 const DescriptionContainer=styled.div`
@@ -114,4 +125,7 @@ border-radius:10px;
     padding:5px 10px;
     border-radius:5px;
 }
+@media screen and (max-width:1000px){
+    width:100%;
+ }
 `

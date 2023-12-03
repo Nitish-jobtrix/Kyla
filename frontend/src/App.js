@@ -33,7 +33,6 @@ import Blank from "./pages/Blank";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./layout/MainLayout";
-import CreateCategoryPage from "./pages/CreateCategoryPage";
 import CreateJobPage from "./pages/CreateJobPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import EditJobPage from "./pages/EditJobPage";
@@ -86,17 +85,14 @@ const App = () => {
                 <Route path="flows" element={<Flows />} />
                 {/* <Route path="users" element={<UsersPage />} /> */}
                 <Route path="applications" element={<RecentApplications />} />
-                <Route
-                  path="categories/create"
-                  element={<CreateCategoryPage />}
-                />
+               
                 <Route path="jobs" element={<JobsPage />} />
                 <Route path="job/create" element={<CreateJobPage />} />
               
                 <Route path="/job/applicants/:jobId" element={<Applicants />} />
                 <Route path="/job/applicants/:jobId/shortlisted" element={<Shortlisted />} /> 
                 
-                {/* <Route path="job/edit/:jobId" element={<EditJobPage />} /> */}
+                <Route path="job/edit/:jobId" element={<EditJobPage />} />
               
                 <Route path="profile" element={<Profile />} />
                 <Route path="categories" element={<CategoriesPage />} />
@@ -110,6 +106,12 @@ const App = () => {
                 path="/jobs/:companyName/search/location/:location"
                 element={<Home />}
               />
+              <Route
+                path="/pagenotfound"
+                element={<NotFound />}
+              />
+              
+
               <Route
                 path="/jobs/:companyName/search/:keyword"
                 element={<Home />}

@@ -1,33 +1,42 @@
-import React, { useEffect } from 'react'
-import { Box, Button, Paper, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Box, Paper, Typography } from '@mui/material'
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
-import { Link } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
 import { useDispatch, useSelector } from 'react-redux';
 import { jobTypeLoadAction } from '../redux/actions/jobTypeAction';
-
 import moment from 'moment'
 import styled from '@emotion/styled';
+import BasicModal from '../component/BasicModal';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const CategoriesPage = () => {
 
     const { user } = useSelector(state => state.userProfile);
     const { jobType, loading } = useSelector(state => state.jobTypeAll);
-    const dispatch = useDispatch();
+    const [flag,setFlag]=useState(false);
+    const dispatch = useDispatch(); 
 
     useEffect(() => {
         const companyName=user?.companyName;
         dispatch(jobTypeLoadAction(companyName));
-    }, [user]);
+    }, [user,flag]);
 
 
     let data = [];
     data = (jobType !== undefined && jobType.length > 0) ? jobType : []
 
     //delete job by Id
-    const deleteJobCategoryById = (id) => {
-        console.log(id)
+    const deleteJobCategoryById = async(id) => {
+      try {
+        const url=`/api/type/delete/${id}`;
+        await axios.delete(url);
+        toast.success("category deleted successfully!");
+        setFlag((prevFlag) => !prevFlag);
+      } catch (error) {
+       console.log(error);
+       toast.error("some error occurred!") 
+      }
     }
 
     const columns = [
@@ -57,7 +66,7 @@ const CategoriesPage = () => {
             headerName: 'Edit',
             width: 120,
             renderCell: (values => (
-                <Button style={{padding:"0"}}><Link style={{  textDecoration: "none" }} to={`/admin/edit/user/${values.row._id}`}><i style={{fontSize:"20px"}} className='bx bxs-edit-alt' ></i></Link></ Button>
+                <BasicModal setFlag={setFlag} edit={true} catId={values.row._id} catName={values.row.jobTypeName}/>
             ))
         
         },
@@ -66,7 +75,9 @@ const CategoriesPage = () => {
             headerName: 'Delete',
             width: 120,
             renderCell: (values => (
-                < Button onClick={() => deleteJobCategoryById(values.row._id)}  ><i style={{fontSize:"20px",marginTop:"-5px"}} className='bx bxs-trash-alt' ></i></ Button>
+                <span onClick={()=>deleteJobCategoryById(values.row._id)} style={{cursor:"pointer"}}><i style={{fontSize:"20px"}} className='bx bxs-trash-alt' ></i></ span>
+                
+            
             ))
         
         },
@@ -82,7 +93,8 @@ const CategoriesPage = () => {
                 Jobs category 
             </Typography>
             <Box sx={{ pb: 2, display: "flex", justifyContent: "right" }}>
-                <Button className='create-btn' variant="contained"  startIcon={<AddIcon />}><Link style={{ color: "white", textDecoration: "none" }} to='/categories/create'>Create category</Link></ Button>
+                <BasicModal setFlag={setFlag}/>
+                {/* <Button className='create-btn' variant="contained"  startIcon={<AddIcon />}><Link style={{ color: "white", textDecoration: "none" }} to='/categories/create'>Create category</Link></ Button> */}
             </Box>
             <Paper sx={{ bgcolor: 'rgb(231 203 222)' }} >
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import { images } from '../constants';
 import { useSelector } from 'react-redux';
@@ -11,15 +11,12 @@ import axios from 'axios';
 const Profile = () => {
 
    const { user } = useSelector(state => state.userProfile); 
-   const fileInputRef = useRef(null);
    const [userName,setUserName]=useState("");
    const [companyName,setCompanyName]=useState("");
    const [email,setEmail]=useState("");
    const [companyWebsite,setCompanyWebsite]=useState("");
    const [aboutCompany,setAboutCompany]=useState("");
-   const [image,setImage]=useState("");
-   const [previewPhoto,setPreviewPhoto]=useState("");
-   
+   const [photo, setPhoto] = useState("");
    
    useEffect(() => {
     if(user){
@@ -32,36 +29,13 @@ const Profile = () => {
    
    }, [user])
    
-   
-
-  useEffect(() => {
-    const getUserdata = async () => {
-        try {
-          const res = await axios.get(
-            `/api/getuser`,
-            { responseType: "blob"} 
-          );
-          const blob = new Blob([res.data], { type: res.data.type });
-          const link = document.createElement("a"); 
-          link.href = window.URL.createObjectURL(blob);
-          setImage(link.href);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getUserdata() ;
-  }, [])
-  
-
-
-
       const handleSubmit = async (e) => {
         e.preventDefault();
       
         try {
-          console.log(fileInputRef.current.files[0]);
+         
           const profileData = new FormData();
-          profileData.append("file", fileInputRef.current.files[0]);
+          profileData.append("photo", photo);
           profileData.append("userName", userName);
           profileData.append("companyName", companyName);
           profileData.append("email", email);
@@ -87,12 +61,37 @@ const Profile = () => {
         <h2>My Profile</h2>
         <br />
         <div className="logo_container">
-       { previewPhoto ? <img src={URL.createObjectURL(previewPhoto)} alt="preview_photo" /> :
-            <img src={image?image:images.usericon} alt="companylogo" /> }
-            <div>
-                <input className="custom-file-input"  onChange={(e) => setPreviewPhoto(e.target.files[0])} type="file" ref={fileInputRef} />
-               
-            </div>
+              <div >
+                {photo ? (
+                  <div className="text-center">
+                    <img
+                      src={URL.createObjectURL(photo)}
+                      alt="user_photo"
+                    
+                    />
+                  </div>
+                ) : (
+                  <div className="text-center">
+                  {user?.logo &&  <img
+                      src={`/api/user/getlogo/${user._id}`}
+                      alt="user_photo"
+                    />
+                  }
+                  </div>
+                )}
+              </div>
+              <div >
+                <label className="upload_btn">
+                  {photo ? photo.name : "Upload Photo"}
+                  <input
+                    type="file"
+                    name="photo"
+                    accept="image/*"
+                    onChange={(e) => setPhoto(e.target.files[0])}
+                    hidden
+                  />
+                </label>
+              </div>
         </div> 
         <FormContainer onSubmit={handleSubmit}>
             <div className="items">
@@ -142,12 +141,15 @@ img{
     padding:10px;
     align-items:center;
     width:100%;
-    
-}
-
-.logo_container div{
-    display:flex;
-    align-items:center;
+ .upload_btn{
+ background:#8e70a9;
+ color:white;
+ padding:10px;
+ font-size:15px;
+ border-radius:5px;
+ font-weight:bold;
+ cursor:pointer;
+ }   
 }
 
 button{

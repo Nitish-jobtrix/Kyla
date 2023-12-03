@@ -17,7 +17,7 @@ const SidebarAdm = () => {
     // const { userInfo } = useSelector(state => state.signIn);
     const { companyUserInfo } = useSelector(state => state.companyUserSignIn);
    const {companyName}=useParams();
-    const { palette } = useTheme();
+   
     const { collapsed } = useProSidebar();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -119,10 +119,10 @@ const SidebarAdm = () => {
                                 },
                             }}
                         >
-                            <MenuItem onClick={logOut} icon={<LoginIcon />}>   Log out </MenuItem>
+                            <MenuItem onClick={logOut} icon={<LoginIcon />}>  Log out </MenuItem>
                         </Menu>
                     </Box>
-                </Box>
+                </Box> 
             </Sidebar>
         </>
     )

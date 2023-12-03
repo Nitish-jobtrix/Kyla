@@ -1,14 +1,15 @@
-import React, {  useRef, useState } from "react";
+import React, {  useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify'
 
+
 const UserResumeUpload = () => {
   const { companyUser } = useSelector(state => state.companyUserProfile);
   const fileInputRef = useRef(null);
   const [resumeUpload,setResumeUpload]=useState(false); 
-  
+  const [fileUrl,setFileUrl]=useState("");
   const addItem = async (e) => {
     e.preventDefault();
     try {
@@ -20,8 +21,10 @@ const UserResumeUpload = () => {
         `/api/jobs/candidate/uploadresume`,
         formData
       );
+     
       if(res.status===201){
         setResumeUpload(true);
+        setFilePath(res.data.file);
         toast.success("Resume uploaded successfully!");
       } 
       else toast.error("some error occurred");
@@ -30,38 +33,42 @@ const UserResumeUpload = () => {
     }
   };
 
-  const downloadFile = async (id) => {
-    try {
-      const res = await axios.get(
-        `/api/jobs/candidate/downloadresume`,
-        { responseType: "blob" }
-      );
-      const blob = new Blob([res.data], { type: res.data.type });
-      const link = document.createElement("a");
-      link.href = window.URL.createObjectURL(blob);
-      console.log(link.href);
-      window.open(link.href);
-      // link.download = "file.pdf";
-      // link.click();
-    } catch (error) {
-      console.log(error);
-    } 
-  };
+  const setFilePath=(filePath)=>{
+    const backendUrl = process.env.REACT_APP_BASE_URL;
+    const fileUrl = `${backendUrl}/${filePath}`;
+    const newFileUrl = fileUrl.replace('/backend', '');
+    setFileUrl(newFileUrl);
+  }
+  useEffect(() => {
+    const getFilePath = async (id) => {
+      try {
+        const filePath = companyUser?.file;
+        setFilePath(filePath); 
+      } catch (error) {
+        console.log(error);
+      } 
+    };
+    if(companyUser){
+    getFilePath();
+    }
+  }, [companyUser])
+  
+
 
 
   return (
     <Wrapper>
        <h1>upload your resume</h1>
        <div className="resume-desc">
-       Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquam ut saepe repellendus quae, dolorum excepturi! Totam sunt est eius nesciunt adipisci esse, officiis beatae unde molestiae, quasi doloribus omnis. Ducimus.
+       Upload your resume to apply for exciting job opportunities, Make sure your resume highlights your skills and experiences.We look forward to reviewing your application and connecting with you.
        </div>       
         <input className="custom-file-input" type="file" ref={fileInputRef} />
-        <Button className="bright_gradient" onClick={addItem}>Upload new resume</Button>
+        <Button className="bright_gradient" onClick={addItem}>Upload new resume</Button> 
     
       <div className="uploaded_resume gradient">
        <h2>uploaded Resumes</h2>
       
-       {(companyUser?.file || resumeUpload===true) ? <Button className="bright_gradient" onClick={downloadFile}>view current resume </Button>:<p>No resume exits</p>}
+       {(companyUser?.file || resumeUpload===true) ? <a  href={fileUrl} rel="noreferrer" target="_blank"><Button className="bright_gradient">view current resume</Button> </a>:<p>No resume exits</p>}
        </div>
     </Wrapper>
   );
@@ -104,6 +111,7 @@ row-gap:10px;
 h2{
   color:#494949;
 }
+
 `
 
 const Button=styled.button`

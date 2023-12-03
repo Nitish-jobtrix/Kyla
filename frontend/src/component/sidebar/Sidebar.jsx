@@ -10,7 +10,6 @@ import axios from 'axios'
 
 const Sidebar = () => {
     const [activeIndex, setActiveIndex] = useState(0);
-    const [companyLogo, setCompanyLogo] = useState(0);
     const { user } = useSelector(state => state.userProfile);
     const location = useLocation();
     const navigate=useNavigate();
@@ -29,23 +28,6 @@ const Sidebar = () => {
         setActiveIndex(curPath.length === 0 ? 0 : activeItem)
     }, [location])
 
-    useEffect(() => {
-        const getUserdata = async () => {
-            try {
-              const res = await axios.get( 
-                `/api/getuser`,
-                { responseType: "blob"} 
-              );
-              const blob = new Blob([res.data], { type: res.data.type });
-              const link = document.createElement("a"); 
-              link.href = window.URL.createObjectURL(blob);
-              setCompanyLogo(link.href);
-            } catch (error) {
-              console.log(error);
-            }
-          };
-          getUserdata() ;
-      }, [])
 
     const closeSidebar = () => {
         document.querySelector('.main__content').style.transform = 'scale(1) translateX(0)'
@@ -67,7 +49,11 @@ const Sidebar = () => {
         <div className='sidebar'>
             <div className="sidebar__logo">
                 <div className="company_logo">
-                    <img src={companyLogo? companyLogo :images.usericon} alt="companylogo" />
+                {user?.logo &&  <img
+                      src={`/api/user/getlogo/${user._id}`}
+                      alt="user_photo"
+                    />
+                  }
                     <div>
                     <h3>{user?.firstName}</h3>
                     <h4 style={{color:"grey"}}>{user?.companyName}</h4>

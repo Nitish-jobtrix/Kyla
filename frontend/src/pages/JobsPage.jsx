@@ -112,7 +112,7 @@ const JobsPage = () => {
                
             </Typography>
             <Box sx={{ pb: 2, display: "flex", justifyContent: "right" }}>
-                <Button variant='contained' className='create-btn' startIcon={<AddIcon />}> <Link style={{ color: "white", textDecoration: "none" }} to="/job/create">Create Job</Link></Button>
+                <Link style={{ color: "white", textDecoration: "none" }} to="/job/create"> <button className='create-btn bright_gradient' ><AddIcon />Create Job</button></Link>
             </Box>
             <Paper sx={{ bgcolor: 'rgb(231 203 222)' }} >
 
@@ -165,8 +165,13 @@ const Wrapper=styled.div`
     background: -webkit-linear-gradient(225deg, hsla(39, 100%, 83%, 1) 0%, hsla(271, 74%, 86%, 1) 69%);
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFE1A9", endColorstr="#DDC2F6", GradientType=1 );
 }
+
 .create-btn{
-    background:#8e70a9;
+    font-weight:bold;
+    color:white;
+    display:flex;
+    align-items:center;
+    column-gap:5px;
 }
 `
 

@@ -116,7 +116,7 @@ try {
     const file = req.file.path; 
     user.file =  file || user.file;
     await user.save();
-    res.status(201).json({ user });
+    res.status(201).json( user );
 } catch (error) {
     return next(error);
 }

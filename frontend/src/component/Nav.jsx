@@ -7,38 +7,28 @@ import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const Nav = () => {
-  const [companyLogo,setCompanyLogo]=useState("");
+  const [hasLogo,setLogo]=useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const { companyName } = useParams();
   const { companyUserInfo } = useSelector(state => state.companyUserSignIn);
-
+  const firstCharacter = companyName?.charAt(0).toUpperCase();
   
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const currentPath = location.pathname;
-        if (currentPath !== '/jobs/candidate/login' && currentPath !== '/jobs/candidate/register' && currentPath !== '/jobs/candidate/dashboard' && currentPath !== '/jobs/candidate/login') {
-          const url=`/api/jobs/verifycompany/${companyName}`;
-          const res = await axios.get(
-           url,
-            { responseType: "blob"}  
-          );
-         
-          const blob = new Blob([res.data], { type: res.data.type });
-          const link = document.createElement("a"); 
-          link.href = window.URL.createObjectURL(blob);
-          setCompanyLogo(link.href);
-          
-        }
+ 
+        const url=`/api/jobs/verifycompany/${companyName}`;
+        const {data} = await axios.get(url);
+        if(!data.success) navigate("/pagenotfound");      
+        setLogo(data?.hasLogo);
       } catch (error) {
         console.log(error);
-        // if(error.response.status===500) navigate("/pagenotfound");
-       
       }
     };
+  
 if(companyName){
     fetchData();
 }
@@ -58,8 +48,8 @@ if(companyName){
   return (
     <Wrapper className='gradient'>
       <div className="leftnav navigation">
-       {companyLogo ? <img className="company_logo" height={50} width={50} src={companyLogo} alt='company_logo' />:
-       <h3>CompanyName</h3>
+       {hasLogo ? <img className="company_logo" height={50} width={50} src={`/api/jobs/${companyName}/logo`} alt='company_logo' />:
+       <h3>{firstCharacter}</h3>
        }
         <a href={`/jobs/${companyName}/about`}>About</a>
         <a href={`/jobs/${companyName}`}>Home</a>

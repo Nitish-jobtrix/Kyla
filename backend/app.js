@@ -49,6 +49,8 @@ app.use(cors());
 // app.get('/', (req, res) => {
 //     res.send("Hello from Node Js");
 // })
+// Serve static files from the 'public/uploads' directory
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/api', companyUserAuthRoutes);
 app.use('/api', companyUserRoutes);
 app.use('/api', userRoutes);

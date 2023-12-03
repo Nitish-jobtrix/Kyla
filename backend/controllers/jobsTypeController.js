@@ -7,7 +7,7 @@ exports.createJobType = async (req, res, next) => {
         const jobT = await JobType.create({
             jobTypeName: req.body.jobTypeName,
             user: req.user.id,
-            companyName:req.body.companyName
+            companyName:req.user.companyName
         });
         res.status(201).json({
             success: true,
@@ -37,13 +37,19 @@ exports.allJobsType = async (req, res, next) => {
 //update job type
 exports.updateJobType = async (req, res, next) => {
     try {
-        const jobT = await JobType.findByIdAndUpdate(req.params.type_id, req.body, { new: true });
+        const jobT = await JobType.findById(req.params.type_id);
+        jobT.jobTypeName=req.body.jobTypeName;
+
+        console.log(req.body.jobTypeName);
+        await jobT.save();
         res.status(200).json({
             success: true,
             jobT
         })
     } catch (error) {
+        console.log(error);
         next(error);
+
     }
 }
 
