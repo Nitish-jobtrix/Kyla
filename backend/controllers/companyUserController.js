@@ -6,7 +6,7 @@ const Job = require("../models/jobModel");
 
 const path = require("path");
 //show single user
-exports.singleUser = async (req, res, next) => {     //i have to change it hahahahahaha....
+exports.singleUser = async (req, res, next) => {   
     try {
         const user = await CompanyUser.findById(req.params.id);
         res.status(200).json({
@@ -53,7 +53,7 @@ exports.deleteUser = async (req, res, next) => {
 
 
 //apply for a job
-exports.createCompanyUserJobsHistory = async (req, res, next) => {
+exports.applyForJob = async (req, res, next) => {
     const { title, description, salary, location, companyName, jobId } = req.body;
 
     try {
@@ -123,20 +123,6 @@ try {
 }
 
 
-
-exports.downloadResume = async (req, res, next) => {
-try {
-    const user = await CompanyUser.findById(req.user.id).select('-password');   
-    if (!user) {
-      return next(new Error("No User found"));
-    }
-    const file = user.file;
-    const filePath = path.join(__dirname, `../../${file}`);
-    res.download(filePath);
-} catch (error) {
-    return next(error); 
-}
-}
 
 
 

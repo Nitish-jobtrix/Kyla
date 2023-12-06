@@ -73,6 +73,16 @@ column-gap:2%;
   background:white;
   }
 
+  @media screen and (max-width:950px) {
+    flex-direction:column;
+    row-gap:20px;
+    .notifications{
+    width:100%;
+    }
+
+  }
+
+
 `
 
 const NotificationItem=styled.div`

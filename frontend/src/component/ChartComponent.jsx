@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import styled from "styled-components";
+import { useMediaQuery } from "@mui/material";
 
 const data = [
   {
@@ -85,11 +86,15 @@ const data = [
 ];
 
 const ChartComponent = () => {
+  const isMobile = useMediaQuery('(max-width:600px)');
+  // Set the aspect ratio based on the screen size
+  const aspectRatio = isMobile ? 2 : 3;
+
   return (
     <ChartContainer>
       <h3>Monthly Applicants</h3>
       <br></br>
-    <ResponsiveContainer width="100%" aspect="3">
+    <ResponsiveContainer width="100%" aspect={aspectRatio}>
       <AreaChart
         width={500}
         height={400}
@@ -121,4 +126,8 @@ background:white;
 padding:20px;
 border-radius:10px;
 width:69%;
+
+@media screen and (max-width:950px) {
+ width:100%; 
+}
 `

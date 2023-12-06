@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import './sidebar.scss'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { images } from '../../constants'
 import sidebarNav from '../../configs/sidebarNav'
 import { userLogoutAction,userProfileAction } from '../../redux/actions/userAction'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import axios from 'axios'
+
+
 
 const Sidebar = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const { user } = useSelector(state => state.userProfile);
     const location = useLocation();
+
     const navigate=useNavigate();
     const dispatch = useDispatch();
     
 
     useEffect(() => {
-        // dispatch(userProfileAction());
         dispatch(userProfileAction());
     }, []);
 
@@ -78,7 +78,7 @@ const Sidebar = () => {
                         </Link>
                     ))
                 }
-                <div className="sidebar__menu__item gradient">
+                <div className="sidebar__menu__item ">
                     <div className="sidebar__menu__item__icon">
                         <i className='bx bx-log-out'></i>
                     </div>

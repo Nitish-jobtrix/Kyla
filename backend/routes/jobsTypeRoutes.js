@@ -9,10 +9,13 @@ const { isAuthenticated, isAdmin } = require('../middleware/auth');
 
 // /api/type/create
 router.post('/type/create', isAuthenticated,  createJobType)
+
 // /api/type/jobs
 router.get('/type', allJobsType)
+
 // /api/type/update/type_id
 router.put('/type/update/:type_id', isAuthenticated,  updateJobType)
+
 // /api/type/delete/type_id
 router.delete('/type/delete/:type_id', isAuthenticated,  deleteJobType)
 

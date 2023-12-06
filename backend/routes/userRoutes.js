@@ -2,35 +2,31 @@ const express = require('express');
 const router = express.Router();
 const { allUsers, singleUser, editUser, deleteUser, verifyCompany ,updateProfile,getUser, getCompanyData,userPhotoController,companyLogoController } = require('../controllers/userController');
 const { isAuthenticated  } = require('../middleware/auth');
-const logoMulterMiddleware = require("../middleware/logoMulterMiddleware");
 const formidable = require("express-formidable");
 //user routes
-// /api/allusers
 
+// /api/jobs/companyName/allusers-----route to get all the users of a particular company
 router.get('/jobs/:companyName/allusers', isAuthenticated, allUsers);
-// /api/user/id
+
+// /api/user/id -------- route to get user  details using id 
 router.get('/user/:id', isAuthenticated, singleUser);
-// /api/user/edit/id
-router.put('/user/edit/:id', isAuthenticated, editUser);
-// /api/admin/user/delete/id 
+
+// /api/admin/user/delete/id ------route for updating the recruiter profile
 router.delete('/admin/user/delete/:id', isAuthenticated, deleteUser);
 
-//uppdate user profile
-// router.post('/user/updateprofile', isAuthenticated,logoMulterMiddleware.single("file"), updateProfile); 
+// /api/user/updateprofile------route for updating the recruiter profile
 router.post('/user/updateprofile', isAuthenticated,  formidable(), updateProfile); 
 
-
-//to check if a company exist or not 
+// /api/jobs/verifycompany/companyName ------- route to verify if company exists or not 
 router.get("/jobs/verifycompany/:companyName",verifyCompany);
 
-//to get logo by just the company name 
+// /api/jobs/companyName/logo ------- route to get the logo of the company 
 router.get("/jobs/:companyName/logo",companyLogoController);
 
-
-//to get company data  ///used in about section 
+// /api/jobs/companydata/companyName ------- route to get the company details using companyName this is not a efficient way use slug instead  
 router.get("/jobs/companydata/:companyName",getCompanyData);
 
-//used to get proper link 
+
 router.get("/getuser",isAuthenticated,getUser);
 
 //get logo
