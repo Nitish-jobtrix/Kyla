@@ -89,6 +89,7 @@ export const companyUserProfileAction = () => async (dispatch) => {
     dispatch({ type: COMPANY_USER_LOAD_REQUEST });
     try {
         const { data } = await axios.get(`/api/jobs/me`);
+        console.log(data);
         dispatch({
             type: COMPANY_USER_LOAD_SUCCESS,
             payload: data

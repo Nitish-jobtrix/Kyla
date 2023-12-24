@@ -73,20 +73,15 @@ exports.applyForJob = async (req, res, next) => {
                 companyName: companyName,
             };
 
-            // Update the job model with the user's application
-            const job = await Job.findOneAndUpdate(
-                { _id: jobId },
-                {
-                    $push: {
-                        applications: {
-                            user: req.user._id,
-                            appliedAt: new Date(),
-                            // Add additional application information if needed
-                        },
-                    },
-                },
-                { new: true }
-            );
+         // Update the job model with the user's application
+
+         const application={
+            user:req.user._id,
+            appliedAt:new Date()
+         }
+         const singleJob=await Job.findOne({ _id: jobId });
+        singleJob.applications.push(application);
+        await singleJob.save();
 
             // Update the user's job history
             currentUser.jobsHistory.push(addJobHistory);

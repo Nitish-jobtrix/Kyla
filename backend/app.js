@@ -8,8 +8,6 @@ var cors = require('cors');
 const path = require('path');
 
 
-
-
 // import routes
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');

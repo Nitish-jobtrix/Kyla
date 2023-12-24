@@ -16,7 +16,7 @@ const ApplicantCard = ({app,jobId,fetchJob,shortlisted}) => {
     });
   // State to manage the selected status
   const [selectedStatus, setSelectedStatus] = useState(app?.status); 
- 
+  const [fileUrl,setFileUrl]=useState("");
 
   // Handler function for status change     
   const handleStatusChange = (event) => {   
@@ -36,6 +36,27 @@ const ApplicantCard = ({app,jobId,fetchJob,shortlisted}) => {
       console.log(error);
     } 
   };
+
+  const setFilePath=(filePath)=>{
+    const backendUrl = process.env.REACT_APP_BASE_URL;
+    const fileUrl = `${backendUrl}/${filePath}`;
+    const newFileUrl = fileUrl.replace('/backend', '');
+    setFileUrl(newFileUrl);
+  }
+  useEffect(() => {
+    const getFilePath = async (id) => {
+      try {
+        const filePath = app?.file;
+        setFilePath(filePath); 
+      } catch (error) {
+        console.log(error);
+      } 
+    };
+    if(app){
+    getFilePath();
+    }
+  }, [app])
+  
 
   // useEffect to make API call when selectedStatus changes
   useEffect(() => {
@@ -64,7 +85,8 @@ const ApplicantCard = ({app,jobId,fetchJob,shortlisted}) => {
     <CardWrapper>
      <p>{app?.user?.firstName}</p>
      <p>{app?.user?.email}</p>
-     <p onClick={getResumeLink} className="view_btn">view</p>
+     
+     <p  className="view_btn"><a href={fileUrl} rel="noreferrer" target="_blank">view</a></p>
      <p>{formattedDate}</p>
 
 {!shortlisted &&

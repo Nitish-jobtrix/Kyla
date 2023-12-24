@@ -10,7 +10,7 @@ const Applicants = () => {
   
   const fetchJob = async () => {
     const { data } = await axios.get(`/api/jobs/applicants/${jobId}`);
-  
+    console.log(data);
     setSingleJob(data);
   }
   //fetch the job by jobid and its applicants 
